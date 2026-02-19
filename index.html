@@ -1,161 +1,109 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>Moving Plan — Shea & Him</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet" />
-
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { font-size: 16px; }
-  body { background: #0d0d0d; color: #d8d4cc; font-family: Georgia, 'Times New Roman', serif; min-height: 100vh; padding-bottom: 100px; }
-  button { cursor: pointer; font-family: inherit; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{font-size:16px}
+body{background:#0d0d0d;color:#d8d4cc;font-family:Georgia,'Times New Roman',serif;min-height:100vh;padding-bottom:100px}
+button{cursor:pointer;font-family:inherit}
 
-  /* ── Setup screen ── */
-  #setup { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 32px; text-align: center; }
-  #setup h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 6vw, 2.6rem); font-weight: 400; color: #ddd9d1; line-height: 1.2; margin-bottom: 12px; }
-  #setup h1 em { color: #9a7a54; font-style: italic; }
-  #setup .label { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.25em; color: #444; text-transform: uppercase; margin-bottom: 20px; }
-  #setup .sub { font-family: 'DM Mono', monospace; font-size: 0.62rem; color: #333; letter-spacing: 0.08em; line-height: 1.8; margin-top: 28px; }
-  #setup .firebase-form { margin-top: 36px; width: 100%; max-width: 420px; }
-  #setup .firebase-form input {
-    width: 100%; background: #111; border: 1px solid #222; border-radius: 4px;
-    padding: 12px 14px; color: #c0bcb4; font-family: 'DM Mono', monospace;
-    font-size: 0.72rem; letter-spacing: 0.04em; margin-bottom: 10px; outline: none;
-  }
-  #setup .firebase-form input:focus { border-color: #9a7a54; }
-  #setup .firebase-form input::placeholder { color: #333; }
-  #setup .btn-row { display: flex; gap: 12px; margin-top: 8px; }
-  .user-btn {
-    flex: 1; background: transparent; border: 1px solid; border-radius: 4px;
-    padding: 14px 20px; font-family: 'Playfair Display', serif; font-size: 1rem;
-    letter-spacing: 0.02em; transition: background 0.15s;
-  }
-  .user-btn.shea { border-color: #9a7a54; color: #9a7a54; }
-  .user-btn.shea:hover { background: #3d2f1f; }
-  .user-btn.him { border-color: #4a7a9a; color: #4a7a9a; }
-  .user-btn.him:hover { background: #1a2f3d; }
-  #setup .error { font-family: 'DM Mono', monospace; font-size: 0.62rem; color: #8a4040; letter-spacing: 0.08em; margin-top: 10px; min-height: 18px; }
-  #setup .connecting { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: #444; letter-spacing: 0.15em; }
+/* Pick screen */
+#pick{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:32px;text-align:center}
+#pick .eyebrow{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.25em;color:#444;text-transform:uppercase;margin-bottom:20px}
+#pick h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,6vw,2.6rem);font-weight:400;color:#ddd9d1;line-height:1.2;margin-bottom:48px}
+#pick h1 em{color:#9a7a54;font-style:italic}
+#pick .btns{display:flex;gap:14px}
+.user-btn{flex:1;background:transparent;border:1px solid;border-radius:4px;padding:16px 32px;font-family:'Playfair Display',serif;font-size:1rem;letter-spacing:.02em;transition:background .15s}
+.user-btn.shea{border-color:#9a7a54;color:#9a7a54}.user-btn.shea:hover{background:#3d2f1f}
+.user-btn.him{border-color:#4a7a9a;color:#4a7a9a}.user-btn.him:hover{background:#1a2f3d}
+#pick .note{margin-top:28px;font-family:'DM Mono',monospace;font-size:.6rem;color:#2e2e2e;letter-spacing:.08em;line-height:1.8}
 
-  /* ── App screen ── */
-  #app { display: none; max-width: 700px; margin: 0 auto; padding: 0 20px; }
+/* App */
+#app{display:none;max-width:700px;margin:0 auto;padding:0 20px}
+.app-header{padding:44px 0 32px}
+.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:10px}
+.user-pill{display:flex;align-items:center;gap:8px}
+.user-dot{width:8px;height:8px;border-radius:50%}
+.user-name{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase}
+.switch-btn{background:none;border:1px solid #1e1e1e;border-radius:3px;padding:4px 10px;font-family:'DM Mono',monospace;font-size:.55rem;color:#3a3a3a;letter-spacing:.12em;text-transform:uppercase;transition:border-color .12s,color .12s}
+.switch-btn:hover{border-color:#333;color:#666}
+.eyebrow-sm{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.25em;color:#484848;text-transform:uppercase;margin-bottom:16px}
+.title{font-family:'Playfair Display',serif;font-size:clamp(1.9rem,5vw,2.8rem);font-weight:400;color:#ddd9d1;line-height:1.16;letter-spacing:-.015em}
+.title em{color:#9a7a54;font-style:italic}
+.subtitle{margin-top:14px;color:#484848;font-size:.72rem;font-family:'DM Mono',monospace;font-weight:300;letter-spacing:.06em;line-height:1.8}
+.legend{display:flex;gap:18px;margin-top:20px}
+.legend-item{display:flex;align-items:center;gap:7px}
+.legend-dot{width:10px;height:10px;border-radius:2px}
+.legend-label{font-family:'DM Mono',monospace;font-size:.58rem;color:#444;letter-spacing:.1em}
+.overall-progress{margin-top:24px}
+.progress-row{display:flex;justify-content:space-between;margin-bottom:8px;font-family:'DM Mono',monospace;font-size:.6rem;color:#3e3e3e;letter-spacing:.1em}
+.progress-track{background:#191919;height:2px;border-radius:1px}
+.progress-fill{height:2px;background:linear-gradient(90deg,#9a7a54,#c4a06a);border-radius:1px;transition:width .5s ease}
 
-  /* Header */
-  .app-header { padding: 44px 0 32px; }
-  .header-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 28px; flex-wrap: wrap; gap: 10px; }
-  .user-pill { display: flex; align-items: center; gap: 8px; }
-  .user-dot { width: 8px; height: 8px; border-radius: 50%; }
-  .user-name { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.15em; text-transform: uppercase; }
-  .header-actions { display: flex; align-items: center; gap: 12px; }
-  .sync-status { font-family: 'DM Mono', monospace; font-size: 0.55rem; color: #2e2e2e; letter-spacing: 0.1em; }
-  .sync-status.saving { color: #555; }
-  .switch-btn { background: none; border: 1px solid #1e1e1e; border-radius: 3px; padding: 4px 10px; font-family: 'DM Mono', monospace; font-size: 0.55rem; color: #3a3a3a; letter-spacing: 0.12em; text-transform: uppercase; transition: border-color 0.12s, color 0.12s; }
-  .switch-btn:hover { border-color: #333; color: #666; }
-  .eyebrow { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 0.25em; color: #484848; text-transform: uppercase; margin-bottom: 16px; }
-  .title { font-family: 'Playfair Display', serif; font-size: clamp(1.9rem, 5vw, 2.8rem); font-weight: 400; color: #ddd9d1; line-height: 1.16; letter-spacing: -0.015em; }
-  .title em { color: #9a7a54; font-style: italic; }
-  .subtitle { margin-top: 14px; color: #484848; font-size: 0.72rem; font-family: 'DM Mono', monospace; font-weight: 300; letter-spacing: 0.06em; line-height: 1.8; }
-  .legend { display: flex; gap: 18px; margin-top: 20px; }
-  .legend-item { display: flex; align-items: center; gap: 7px; }
-  .legend-dot { width: 10px; height: 10px; border-radius: 2px; }
-  .legend-label { font-family: 'DM Mono', monospace; font-size: 0.58rem; color: #444; letter-spacing: 0.1em; }
-  .overall-progress { margin-top: 24px; }
-  .progress-row { display: flex; justify-content: space-between; margin-bottom: 8px; font-family: 'DM Mono', monospace; font-size: 0.6rem; color: #3e3e3e; letter-spacing: 0.1em; }
-  .progress-row .pct { transition: color 0.3s; }
-  .progress-track { background: #191919; height: 2px; border-radius: 1px; }
-  .progress-fill { height: 2px; background: linear-gradient(90deg, #9a7a54, #c4a06a); border-radius: 1px; transition: width 0.5s ease; }
+/* Sections */
+.section{border-top:1px solid #191919}
+.section-btn{width:100%;background:transparent;border:none;padding:22px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;text-align:left;transition:background .1s;border-radius:4px}
+.section-btn:hover{background:#111}
+.section-left{display:flex;align-items:flex-start;gap:16px}
+.section-icon{font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.15em;padding-top:4px}
+.section-title{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:500;color:#d8d4cc}
+.section-title.done{color:#444;text-decoration:line-through}
+.section-phase{font-family:'DM Mono',monospace;font-size:.54rem;color:#2e2e2e;letter-spacing:.1em;margin-top:5px}
+.section-right{display:flex;align-items:center;gap:12px;padding-top:4px;flex-shrink:0}
+.section-bar-track{width:44px;height:1px;background:#1e1e1e}
+.section-bar-fill{height:1px;background:#9a7a54;transition:width .3s}
+.section-count{font-family:'DM Mono',monospace;font-size:.54rem;color:#333;letter-spacing:.08em}
+.section-toggle{color:#2e2e2e;font-family:monospace;font-size:.9rem}
+.section-tasks{padding-bottom:10px}
 
-  /* Sections */
-  .section { border-top: 1px solid #191919; }
-  .section-btn { width: 100%; background: transparent; border: none; padding: 22px 0; display: flex; align-items: flex-start; justify-content: space-between; gap: 16; text-align: left; transition: background 0.1s; border-radius: 4px; }
-  .section-btn:hover { background: #111; }
-  .section-left { display: flex; align-items: flex-start; gap: 16px; }
-  .section-icon { font-family: 'DM Mono', monospace; font-size: 0.56rem; letter-spacing: 0.15em; padding-top: 4px; transition: color 0.3s; }
-  .section-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 500; color: #d8d4cc; transition: color 0.3s; }
-  .section-title.done { color: #444; text-decoration: line-through; }
-  .section-phase { font-family: 'DM Mono', monospace; font-size: 0.54rem; color: #2e2e2e; letter-spacing: 0.1em; margin-top: 5px; }
-  .section-right { display: flex; align-items: center; gap: 12px; padding-top: 4px; flex-shrink: 0; }
-  .section-bar-track { width: 44px; height: 1px; background: #1e1e1e; }
-  .section-bar-fill { height: 1px; background: #9a7a54; transition: width 0.3s; }
-  .section-count { font-family: 'DM Mono', monospace; font-size: 0.54rem; color: #333; letter-spacing: 0.08em; }
-  .section-toggle { color: #2e2e2e; font-family: monospace; font-size: 0.9rem; }
-  .section-tasks { padding-bottom: 10px; }
+/* Tasks */
+.task{border-radius:3px;transition:background .1s}
+.task:hover{background:rgba(255,255,255,.018)}
+.task-row{display:flex;align-items:flex-start;padding:13px 8px 11px 22px;gap:13px}
+.check-btn{border-radius:2px;display:flex;align-items:center;justify-content:center;padding:0;transition:border-color .12s,background .12s;flex-shrink:0}
+.check-btn:hover{filter:brightness(1.3)}
+.task-check{width:16px;height:16px;min-width:16px;margin-top:3px}
+.sub-check{width:13px;height:13px;min-width:13px}
+.task-body{flex:1;min-width:0}
+.task-top{display:flex;align-items:flex-start;gap:8px}
+.task-text{font-size:.9rem;color:#b8b4ac;line-height:1.6;flex:1;transition:color .2s}
+.task-text.done{color:#363636;text-decoration:line-through}
+.checker-tag{font-family:'DM Mono',monospace;font-size:.54rem;letter-spacing:.1em;white-space:nowrap;margin-top:5px;opacity:.8;flex-shrink:0}
+.owner-tag{font-family:'DM Mono',monospace;font-size:.52rem;letter-spacing:.08em;white-space:nowrap;margin-top:5px;flex-shrink:0;opacity:.45;border-radius:2px;padding:1px 6px}
+.task-note{margin-top:7px;font-size:.68rem;color:#424242;font-family:'DM Mono',monospace;font-weight:300;letter-spacing:.02em;line-height:1.65;border-left:2px solid #1c1c1c;padding-left:10px}
+.expand-btn{background:none;border:1px solid #1e1e1e;border-radius:3px;font-family:'DM Mono',monospace;font-size:.56rem;letter-spacing:.1em;text-transform:uppercase;padding:4px 10px;margin-top:9px;display:inline-flex;align-items:center;gap:7px;transition:color .12s,border-color .12s}
+.expand-btn:hover{border-color:#333}
+.expand-arrow{opacity:.35;font-size:.5rem}
 
-  /* Tasks */
-  .task { border-radius: 3px; transition: background 0.1s; }
-  .task:hover { background: rgba(255,255,255,0.018); }
-  .task-row { display: flex; align-items: flex-start; padding: 13px 8px 11px 22px; gap: 13px; }
-  .check-btn { border-radius: 2px; display: flex; align-items: center; justify-content: center; padding: 0; transition: border-color 0.12s, background 0.12s; flex-shrink: 0; }
-  .check-btn:hover { filter: brightness(1.3); }
-  .task-check { width: 16px; height: 16px; min-width: 16px; margin-top: 3px; }
-  .sub-check { width: 13px; height: 13px; min-width: 13px; }
-  .task-body { flex: 1; min-width: 0; }
-  .task-top { display: flex; align-items: flex-start; gap: 8px; }
-  .task-text { font-size: 0.9rem; color: #b8b4ac; line-height: 1.6; flex: 1; transition: color 0.2s; }
-  .task-text.done { color: #363636; text-decoration: line-through; }
-  .checker-tag { font-family: 'DM Mono', monospace; font-size: 0.54rem; letter-spacing: 0.1em; white-space: nowrap; margin-top: 5px; opacity: 0.8; flex-shrink: 0; }
-  .task-note { margin-top: 7px; font-size: 0.68rem; color: #424242; font-family: 'DM Mono', monospace; font-weight: 300; letter-spacing: 0.02em; line-height: 1.65; border-left: 2px solid #1c1c1c; padding-left: 10px; }
-  .expand-btn { background: none; border: 1px solid #1e1e1e; border-radius: 3px; font-family: 'DM Mono', monospace; font-size: 0.56rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 4px 10px; margin-top: 9px; display: inline-flex; align-items: center; gap: 7px; transition: color 0.12s, border-color 0.12s; }
-  .expand-btn:hover { border-color: #333; }
-  .expand-arrow { opacity: 0.35; font-size: 0.5rem; }
+/* Subtasks */
+.subtasks{margin-left:50px;border-left:1px solid #191919;padding-left:18px;padding-bottom:6px}
+.subtask{display:flex;align-items:center;gap:11px;padding:8px 6px;border-radius:3px;transition:background .1s}
+.subtask:hover{background:rgba(255,255,255,.015)}
+.sub-text{font-size:.81rem;color:#565250;line-height:1.5;flex:1;transition:color .2s}
+.sub-text.done{color:#2e2e2e;text-decoration:line-through}
+.sub-checker{font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.1em;opacity:.7;flex-shrink:0}
 
-  /* Subtasks */
-  .subtasks { margin-left: 50px; border-left: 1px solid #191919; padding-left: 18px; padding-bottom: 6px; }
-  .subtask { display: flex; align-items: center; gap: 11px; padding: 8px 6px; border-radius: 3px; transition: background 0.1s; }
-  .subtask:hover { background: rgba(255,255,255,0.015); }
-  .sub-text { font-size: 0.81rem; color: #565250; line-height: 1.5; flex: 1; transition: color 0.2s; }
-  .sub-text.done { color: #2e2e2e; text-decoration: line-through; }
-  .sub-checker { font-family: 'DM Mono', monospace; font-size: 0.5rem; letter-spacing: 0.1em; opacity: 0.7; flex-shrink: 0; }
-
-  .footer { border-top: 1px solid #191919; padding-top: 40px; font-family: 'DM Mono', monospace; font-size: 0.56rem; color: #222; letter-spacing: 0.22em; text-transform: uppercase; text-align: center; }
-
-  /* Loading overlay */
-  #loading { position: fixed; inset: 0; background: #0d0d0d; display: flex; align-items: center; justify-content: center; z-index: 100; }
-  #loading span { font-family: 'DM Mono', monospace; font-size: 0.65rem; color: #333; letter-spacing: 0.2em; }
+.footer{border-top:1px solid #191919;padding-top:40px;font-family:'DM Mono',monospace;font-size:.56rem;color:#222;letter-spacing:.22em;text-transform:uppercase;text-align:center}
 </style>
-
 </head>
 <body>
 
-<!-- Loading -->
-
-<div id="loading"><span>connecting...</span></div>
-
-<!-- Setup screen -->
-
-<div id="setup" style="display:none;">
-  <div class="label">Shared Relocation Plan</div>
+<!-- Who are you? -->
+<div id="pick">
+  <div class="eyebrow">Shared Relocation Plan</div>
   <h1>Moving Out,<br/><em>Starting Over Right</em></h1>
-
-  <div class="firebase-form">
-    <div style="font-family:'DM Mono',monospace;font-size:0.62rem;color:#555;letter-spacing:0.1em;margin-bottom:16px;line-height:1.7;">
-      Enter your Firebase Realtime Database URL below,<br/>then choose who you are.
-    </div>
-    <input type="url" id="db-url" placeholder="https://your-project-default-rtdb.firebaseio.com" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-    <div class="error" id="url-error"></div>
-    <div class="btn-row" id="user-btns" style="display:none;">
-      <button class="user-btn shea" onclick="startApp('shea')">Shea</button>
-      <button class="user-btn him" onclick="startApp('him')">Him</button>
-    </div>
-    <button onclick="connectDB()" style="width:100%;margin-top:4px;background:none;border:1px solid #2a2a2a;border-radius:4px;padding:12px;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;color:#555;transition:border-color 0.15s,color 0.15s;" onmouseover="this.style.borderColor='#9a7a54';this.style.color='#9a7a54'" onmouseout="this.style.borderColor='#2a2a2a';this.style.color='#555'">
-      Connect
-    </button>
-    <div id="connect-status" class="sub" style="margin-top:16px;min-height:20px;"></div>
+  <div class="btns">
+    <button class="user-btn shea" onclick="startApp('shea')">Shea</button>
+    <button class="user-btn him" onclick="startApp('him')">Him</button>
   </div>
-
-  <div class="sub">
-    Don't have Firebase set up yet?<br/>
-    <a href="https://console.firebase.google.com/" target="_blank" style="color:#9a7a54;text-decoration:none;">console.firebase.google.com</a>
-    → Create project → Realtime Database → Start in test mode → Copy URL
-  </div>
+  <p class="note">Your checks save on your device.<br/>Both of you can track your own progress.</p>
 </div>
 
-<!-- App screen -->
-
+<!-- Main app -->
 <div id="app">
   <div class="app-header">
     <div class="header-top">
@@ -163,17 +111,11 @@
         <div class="user-dot" id="user-dot"></div>
         <span class="user-name" id="user-name-display"></span>
       </div>
-      <div class="header-actions">
-        <span class="sync-status" id="sync-status"></span>
-        <button class="switch-btn" onclick="switchUser()">Switch</button>
-      </div>
+      <button class="switch-btn" onclick="switchUser()">Switch</button>
     </div>
-    <div class="eyebrow">Shared Relocation Plan</div>
+    <div class="eyebrow-sm">Shared Relocation Plan</div>
     <h1 class="title">Moving Out,<br/><em>Starting Over Right</em></h1>
-    <p class="subtitle">
-      Harrison, AR → his place &nbsp;·&nbsp; 2 hours away<br/>
-      Quitting Empower Healthcare Solutions &nbsp;·&nbsp; 48-member caseload handoff
-    </p>
+    <p class="subtitle">Harrison, AR → his place &nbsp;·&nbsp; 2 hours away<br/>Quitting Empower Healthcare Solutions &nbsp;·&nbsp; 48-member caseload handoff</p>
     <div class="legend">
       <div class="legend-item"><div class="legend-dot" style="background:#9a7a54"></div><span class="legend-label">Shea</span></div>
       <div class="legend-item"><div class="legend-dot" style="background:#4a7a9a"></div><span class="legend-label">Him</span></div>
@@ -181,7 +123,7 @@
     <div class="overall-progress">
       <div class="progress-row">
         <span id="overall-text">0 of 0 complete</span>
-        <span class="pct" id="overall-pct">0%</span>
+        <span id="overall-pct">0%</span>
       </div>
       <div class="progress-track"><div class="progress-fill" id="overall-bar" style="width:0%"></div></div>
     </div>
@@ -190,21 +132,16 @@
   <div class="footer" id="footer-msg">Work through it in order.</div>
 </div>
 
-<script type="module">
-// ─── Firebase SDK ──────────────────────────────────────────────────────────────
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, onValue, update, get } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
-// ─── Data ─────────────────────────────────────────────────────────────────────
-const SECTIONS = [
-  { id:"job", title:"Leaving Your Job", icon:"01", phase:"Do First — 4–6 Weeks Out", tasks:[
-    { id:"j0", text:"Decide your last day and write your resignation letter", note:"Standard is 2 weeks, but with 48 active members on your caseload, offering 3–4 weeks is professional and gives your supervisor time to redistribute. Check your offer letter for any contractual notice requirements.", subtasks:[
+<script>
+const SECTIONS=[
+  {id:"job",title:"Leaving Your Job",icon:"01",phase:"Do First — 4–6 Weeks Out",tasks:[
+    {id:"j0",text:"Decide your last day and write your resignation letter",note:"Standard is 2 weeks, but with 48 active members on your caseload, offering 3–4 weeks is professional. Check your offer letter for any contractual notice requirements.",subtasks:[
       {id:"j0a",text:"Check your employment contract for required notice period"},
       {id:"j0b",text:"Draft a short, professional resignation letter (date, last day, brief thanks)"},
-      {id:"j0c",text:"Deliver it in person or via email to your direct supervisor first — before anyone else knows"},
+      {id:"j0c",text:"Deliver it to your direct supervisor first — before anyone else knows"},
       {id:"j0d",text:"Get written confirmation of your accepted last day"},
     ]},
-    { id:"j1", text:"Start your caseload handoff — all 48 members", note:"This is the most critical part of leaving a care coordination role ethically. Your members are vulnerable — a clean handoff protects them and protects you professionally.", subtasks:[
+    {id:"j1",text:"Start your caseload handoff — all 48 members",note:"This is the most critical part of leaving a care coordination role ethically. Your members are vulnerable — a clean handoff protects them and protects you professionally.",subtasks:[
       {id:"j1a",text:"Run a full caseload report — current status of all 48 members"},
       {id:"j1b",text:"Flag high-acuity or high-risk members who need priority handoff"},
       {id:"j1c",text:"Identify members with upcoming care plan reviews, appointments, or authorizations expiring"},
@@ -212,15 +149,15 @@ const SECTIONS = [
       {id:"j1e",text:"Meet with supervisor to discuss redistribution plan for the caseload"},
       {id:"j1f",text:"Warm handoff calls/notes for your most complex members"},
     ]},
-    { id:"j2", text:"Documentation — leave everything airtight", note:"If you're working in an EHR or care management platform, your notes need to be current. Incomplete documentation can be a liability.", subtasks:[
+    {id:"j2",text:"Documentation — leave everything airtight",note:"Your notes need to be current. Incomplete documentation can be a liability.",subtasks:[
       {id:"j2a",text:"Ensure all member charts and care plans are up to date in the system"},
       {id:"j2b",text:"Complete any outstanding assessments or care plan signatures"},
       {id:"j2c",text:"Close or escalate any open referrals, authorizations, or pending items"},
       {id:"j2d",text:"Document all pending provider communications and follow-ups"},
-      {id:"j2e",text:"Ensure any HIPAA-relevant documentation is handled correctly — don't take member data with you"},
+      {id:"j2e",text:"Handle all HIPAA-relevant documentation correctly — don't take member data with you"},
     ]},
-    { id:"j3", text:"Handle internal relationships and logistics", subtasks:[
-      {id:"j3a",text:"Notify key providers or community partners you work with closely (where appropriate)"},
+    {id:"j3",text:"Handle internal relationships and logistics",subtasks:[
+      {id:"j3a",text:"Notify key providers or community partners you work with closely"},
       {id:"j3b",text:"Return company equipment — laptop, badge, phone, any devices"},
       {id:"j3c",text:"Remove personal items from your workspace / desk"},
       {id:"j3d",text:"Ask HR about final paycheck timing, PTO payout, and benefits end date"},
@@ -229,23 +166,23 @@ const SECTIONS = [
       {id:"j3g",text:"Download any personal files from work accounts before last day"},
       {id:"j3h",text:"Update LinkedIn after your last day"},
     ]},
-    { id:"j4", text:"After your last day — financial loose ends", subtasks:[
+    {id:"j4",text:"After your last day — financial loose ends",subtasks:[
       {id:"j4a",text:"File for unemployment if there will be a gap before new job"},
       {id:"j4b",text:"Decide what to do with your 401k — roll over, leave, or transfer"},
       {id:"j4c",text:"Update direct deposit at your bank to remove old employer"},
       {id:"j4d",text:"Confirm W-2 will be sent to your new address"},
     ]},
   ]},
-  { id:"admin", title:"Notify & Redirect", icon:"02", phase:"4–6 Weeks Out", tasks:[
-    { id:"a1", text:"Give Kurt Owens 30 days written notice — required by your lease", note:"Your lease at 1606 B Campus, Harrison AR is explicit: no 30-day notice = forfeit your full $525 deposit. Send to kurt454@live.com and keep the sent email as proof. He can also be reached at 573-738-0010.", subtasks:[
+  {id:"admin",title:"Notify & Redirect",icon:"02",phase:"4–6 Weeks Out",tasks:[
+    {id:"a1",text:"Give Kurt Owens 30 days written notice — required by your lease",note:"Your lease at 1606 B Campus, Harrison AR: no 30-day notice = forfeit your full $525 deposit. Send to kurt454@live.com, keep the sent email. Phone: 573-738-0010.",subtasks:[
       {id:"a1a",text:"Write notice email to kurt454@live.com — include your name, address, and exact move-out date"},
       {id:"a1b",text:"Send it at least 30 days before your last day (count carefully)"},
       {id:"a1c",text:"Screenshot or save the sent email immediately"},
-      {id:"a1d",text:"Your $525 deposit must be returned within 7 days of move-out + keys returned — note that date"},
+      {id:"a1d",text:"Note: $525 deposit returned within 7 days of move-out + keys returned"},
       {id:"a1e",text:"Return all keys on your last day — deposit clock doesn't start until keys are back"},
     ]},
-    { id:"a2", text:"Set up USPS mail forwarding", note:"Do this at usps.com — it takes about a week to kick in. Do it 2 weeks before your move date.", subtasks:[]},
-    { id:"a3", text:"Update your address everywhere — work through this list", subtasks:[
+    {id:"a2",text:"Set up USPS mail forwarding",note:"Do this at usps.com — takes about a week. Set it up 2 weeks before move date.",subtasks:[]},
+    {id:"a3",text:"Update your address everywhere",subtasks:[
       {id:"a3a",text:"Bank accounts & credit cards"},
       {id:"a3b",text:"New employer / HR (once you have one)"},
       {id:"a3c",text:"Driver's license & DMV — required within 30 days in most states"},
@@ -256,71 +193,71 @@ const SECTIONS = [
       {id:"a3h",text:"Amazon, Instacart, DoorDash, subscriptions"},
       {id:"a3i",text:"IRS — Form 8822 Change of Address"},
     ]},
-    { id:"a4", text:"Tell family and close friends your new address", subtasks:[]},
+    {id:"a4",text:"Tell family and close friends your new address",subtasks:[]},
   ]},
-  { id:"his", title:"His To-Do List", icon:"03", phase:"His Jobs — Throughout the Move", tasks:[
-    { id:"h1", owner:"him", text:"Make space for her stuff — before she arrives", note:"She's moving into your place. She needs real, permanent space — not a corner of a closet. Do this before moving day.", subtasks:[
+  {id:"his",title:"His To-Do List",icon:"03",phase:"His Jobs — Throughout the Move",tasks:[
+    {id:"h1",owner:"him",text:"Make space for her stuff — before she arrives",note:"She's moving into your place. She needs real, permanent space — not a corner of a closet. Do this before moving day.",subtasks:[
       {id:"h1a",text:"Clear out drawer/closet space for her clothes"},
       {id:"h1b",text:"Make room in the bathroom for her things"},
       {id:"h1c",text:"Clear kitchen cabinet space for her stuff"},
       {id:"h1d",text:"Decide together where her furniture and decor will go"},
     ]},
-    { id:"h2", owner:"him", text:"Book the moving truck or van", note:"Two hours requires a real truck, not a friend's pickup. Reserve it early — weekends book out fast.", subtasks:[
+    {id:"h2",owner:"him",text:"Book the moving truck or van",note:"Two hours requires a real truck. Reserve it early — weekends book out fast.",subtasks:[
       {id:"h2a",text:"Pick a truck rental — Uhaul, Penske, Enterprise"},
       {id:"h2b",text:"Reserve it for moving day ASAP"},
       {id:"h2c",text:"Confirm you can drive it — some require extra insurance"},
       {id:"h2d",text:"Know the parking situation at both ends"},
     ]},
-    { id:"h3", owner:"him", text:"Recruit and coordinate moving help", note:"She can't load a truck alone. Organize people, give them a time, and feed them.", subtasks:[
+    {id:"h3",owner:"him",text:"Recruit and coordinate moving help",note:"She can't load a truck alone. Organize people, give them a time, and feed them.",subtasks:[
       {id:"h3a",text:"Line up at least 2 people to help on moving day"},
       {id:"h3b",text:"Give them a specific arrival time, not 'sometime in the morning'"},
       {id:"h3c",text:"Plan food — pizza, snacks, drinks for helpers"},
     ]},
-    { id:"h4", owner:"him", text:"Drive down to help pack or do a pre-move run", note:"If there's furniture or heavy items, one trip before moving day makes the actual day much easier.", subtasks:[
+    {id:"h4",owner:"him",text:"Drive down to help pack or do a pre-move run",note:"If there's furniture or heavy items, one trip before moving day makes the actual day much easier.",subtasks:[
       {id:"h4a",text:"Coordinate a weekend trip to her place to help sort/pack"},
       {id:"h4b",text:"Bring extra boxes if you have them"},
     ]},
-    { id:"h5", owner:"him", text:"Prepare your place for her arrival", subtasks:[
-      {id:"h5a",text:"Deep clean before she moves in — first impressions of the space matter"},
+    {id:"h5",owner:"him",text:"Prepare your place for her arrival",subtasks:[
+      {id:"h5a",text:"Deep clean before she moves in"},
       {id:"h5b",text:"Make sure there's food in the fridge for when she arrives exhausted"},
       {id:"h5c",text:"Have her key ready to hand over"},
       {id:"h5d",text:"Clear a landing zone — somewhere to put boxes without chaos"},
     ]},
-    { id:"h6", owner:"him", text:"Talk through the shared living logistics", note:"Better to have these conversations before she moves in than after.", subtasks:[
+    {id:"h6",owner:"him",text:"Talk through the shared living logistics",note:"Better to have these conversations before she moves in than after.",subtasks:[
       {id:"h6a",text:"Discuss how bills/rent will be split"},
       {id:"h6b",text:"Talk through household chores and expectations"},
       {id:"h6c",text:"Discuss guests, overnight visitors, personal space"},
       {id:"h6d",text:"Make sure she feels like it's her home too, not just staying at yours"},
     ]},
   ]},
-  { id:"utilities", title:"Utilities & Insurance", icon:"04", phase:"3–4 Weeks Out", tasks:[
-    { id:"u1", text:"Cancel services at your current apartment", subtasks:[
+  {id:"utilities",title:"Utilities & Insurance",icon:"04",phase:"3–4 Weeks Out",tasks:[
+    {id:"u1",text:"Cancel services at your current apartment",subtasks:[
       {id:"u1a",text:"Electric / gas — schedule shutoff for move-out day (not before)"},
       {id:"u1b",text:"Internet — schedule cancellation, note equipment return requirements"},
       {id:"u1c",text:"Renter's insurance — cancel effective move-out date"},
       {id:"u1d",text:"Water / trash if it's in your name"},
     ]},
-    { id:"u2", text:"Get sorted at his place", note:"Have this conversation explicitly — who pays what, what gets combined, what stays separate.", subtasks:[
+    {id:"u2",text:"Get sorted at his place",note:"Have this conversation explicitly — who pays what, what gets combined, what stays separate.",subtasks:[
       {id:"u2a",text:"Clarify which utilities are already in his name and covered"},
       {id:"u2b",text:"Decide if you're adding your name to any accounts"},
       {id:"u2c",text:"Get renter's insurance at the new address — cover your stuff"},
       {id:"u2d",text:"Confirm internet speed is adequate for working from home if needed"},
     ]},
-    { id:"u3", text:"Health insurance — don't let this lapse", note:"Leaving a job is a qualifying life event for marketplace plans. You have 60 days.", subtasks:[
+    {id:"u3",text:"Health insurance — don't let this lapse",note:"Leaving a job is a qualifying life event for marketplace plans. You have 60 days.",subtasks:[
       {id:"u3a",text:"Find out your benefits end date from HR"},
       {id:"u3b",text:"Explore COBRA — expensive but immediate continuity"},
       {id:"u3c",text:"Check healthcare.gov for marketplace plans in your new state/county"},
       {id:"u3d",text:"If going on his plan — check if that's an option and timeline"},
     ]},
   ]},
-  { id:"sort", title:"Sort & Declutter", icon:"05", phase:"3–4 Weeks Out — Before You Pack Anything", tasks:[
-    { id:"s0", text:"Have the space conversation with your boyfriend first", note:"Before you pack a single box, know what's actually coming. His place has existing furniture, systems, a kitchen setup. Figure out what fits, what doubles up, and what goes.", subtasks:[
+  {id:"sort",title:"Sort & Declutter",icon:"05",phase:"3–4 Weeks Out — Before You Pack Anything",tasks:[
+    {id:"s0",text:"Have the space conversation with your boyfriend first",note:"Before you pack a single box, know what's actually coming. Figure out what fits, what doubles up, and what goes.",subtasks:[
       {id:"s0a",text:"Walk through his place together — in person or on video call"},
       {id:"s0b",text:"Identify what furniture of yours is wanted vs. redundant"},
       {id:"s0c",text:"Decide where your clothes, toiletries, and daily things will live"},
       {id:"s0d",text:"Book storage unit now if you'll need one — they fill up"},
     ]},
-    { id:"s1", text:"Bedroom — start here, it's the most personal", subtasks:[
+    {id:"s1",text:"Bedroom — start here, it's the most personal",subtasks:[
       {id:"s1a",text:"Full closet audit — keep only what you actually wear"},
       {id:"s1b",text:"Dresser drawers — purge before packing"},
       {id:"s1c",text:"Under the bed — clear it completely"},
@@ -328,64 +265,64 @@ const SECTIONS = [
       {id:"s1e",text:"Bedding — decide what's coming, what gets replaced"},
       {id:"s1f",text:"Decide on the bed frame and mattress — is it coming or staying?"},
     ]},
-    { id:"s2", text:"Bathroom — easier than you think, still takes time", subtasks:[
+    {id:"s2",text:"Bathroom — easier than you think, still takes time",subtasks:[
       {id:"s2a",text:"Toss expired medications, old products, anything half-used you won't finish"},
       {id:"s2b",text:"Consolidate duplicates — you don't need 4 half-empty shampoos"},
       {id:"s2c",text:"Go through under the sink and medicine cabinet completely"},
       {id:"s2d",text:"Coordinate with him on bathroom space — where will your stuff go?"},
     ]},
-    { id:"s3", text:"Kitchen — the most overlap-prone room", note:"He already has a kitchen setup. Be selective — duplicates are clutter.", subtasks:[
+    {id:"s3",text:"Kitchen — the most overlap-prone room",note:"He already has a kitchen setup. Be selective — duplicates are clutter.",subtasks:[
       {id:"s3a",text:"Go through every cabinet and drawer"},
       {id:"s3b",text:"Keep only what he doesn't have or what's clearly better than his version"},
       {id:"s3c",text:"Clear out the pantry — donate or finish non-perishables"},
       {id:"s3d",text:"Fridge — plan to use it down in the last 2 weeks"},
       {id:"s3e",text:"Appliances — decide what's worth bringing (stand mixer, etc.)"},
     ]},
-    { id:"s4", text:"Living room & common areas", subtasks:[
+    {id:"s4",text:"Living room & common areas",subtasks:[
       {id:"s4a",text:"Furniture — what's coming, what's being sold, what's being stored"},
       {id:"s4b",text:"Decor, art, plants — assess what has a home in the new place"},
       {id:"s4c",text:"Electronics — TV, gaming, sound system"},
       {id:"s4d",text:"Books and media — be ruthless, they're heavy"},
     ]},
-    { id:"s5", text:"Office / work area", subtasks:[
+    {id:"s5",text:"Office / work area",subtasks:[
       {id:"s5a",text:"Shred or securely dispose of any work documents with member info (HIPAA)"},
       {id:"s5b",text:"Go through all paperwork — file what matters, toss the rest"},
       {id:"s5c",text:"Cable/cord drawer — you know the one. Toss what you can't identify"},
       {id:"s5d",text:"Desk setup — is it coming? Where will it go at his place?"},
     ]},
-    { id:"s6", text:"Move unwanted things out before packing begins", subtasks:[
+    {id:"s6",text:"Move unwanted things out before packing begins",subtasks:[
       {id:"s6a",text:"List furniture on Facebook Marketplace — do this early, it takes time to sell"},
       {id:"s6b",text:"Donate clothes (ThredUp sends a bag, Goodwill takes drop-offs)"},
       {id:"s6c",text:"Offer things to friends before donating"},
       {id:"s6d",text:"Schedule a junk removal pickup for anything unsellable"},
     ]},
   ]},
-  { id:"pack", title:"Packing", icon:"06", phase:"2–3 Weeks Out", tasks:[
-    { id:"p0", text:"Get your packing supplies together first", subtasks:[
+  {id:"pack",title:"Packing",icon:"06",phase:"2–3 Weeks Out",tasks:[
+    {id:"p0",text:"Get your packing supplies together first",subtasks:[
       {id:"p0a",text:"Boxes — Nextdoor, Facebook Marketplace, liquor stores often have free ones"},
       {id:"p0b",text:"Tape gun + extra tape rolls (buy more than you think)"},
       {id:"p0c",text:"Packing paper or newsprint for fragile items"},
       {id:"p0d",text:"Bubble wrap for anything breakable"},
       {id:"p0e",text:"Wardrobe boxes for hanging clothes — worth it"},
-      {id:"p0f",text:"Permanent markers in 2 colors — one per zone or floor"},
+      {id:"p0f",text:"Permanent markers in 2 colors"},
       {id:"p0g",text:"Large zip-lock bags for hardware, screws, small parts"},
     ]},
-    { id:"p1", text:"Pack room by room — in this order", note:"Packing by room makes unpacking coherent. Label every box: ROOM + contents + FRAGILE if needed.", subtasks:[
+    {id:"p1",text:"Pack room by room — in this order",note:"Label every box: ROOM + contents + FRAGILE if needed.",subtasks:[
       {id:"p1a",text:"Storage areas first — closets, under beds, seasonal items"},
       {id:"p1b",text:"Books, decor, and sentimental items — heavy things in small boxes"},
       {id:"p1c",text:"Living room decor and non-essential electronics"},
       {id:"p1d",text:"Office supplies, files, cables"},
-      {id:"p1e",text:"Bedroom — clothes (use wardrobe boxes or garbage bags on hangers)"},
-      {id:"p1f",text:"Kitchen — pack non-daily items; leave out what you'll use until the last week"},
+      {id:"p1e",text:"Bedroom — clothes (wardrobe boxes or garbage bags on hangers)"},
+      {id:"p1f",text:"Kitchen — pack non-daily items; leave out what you'll use until last week"},
       {id:"p1g",text:"Bathroom — pack non-essentials; leave a small toiletry kit out"},
     ]},
-    { id:"p2", text:"Label and number every box", note:"Write the room on every side of the box. Numbering boxes lets you verify nothing got lost.", subtasks:[
-      {id:"p2a",text:"Create a simple box inventory (notes app is fine) — Box 1: Kitchen, dishes etc."},
+    {id:"p2",text:"Label and number every box",note:"Write the room on every side. Numbering lets you verify nothing got lost.",subtasks:[
+      {id:"p2a",text:"Create a simple box inventory — Box 1: Kitchen, dishes etc."},
       {id:"p2b",text:"Mark FRAGILE clearly on appropriate boxes"},
       {id:"p2c",text:"Mark HEAVY on dense boxes so movers know"},
       {id:"p2d",text:"Photograph valuables before boxing them"},
     ]},
-    { id:"p3", text:"Pack your first-night bag last — keep it separate and accessible", note:"After a 2-hour drive and a full day of moving, you will not want to dig through boxes.", subtasks:[
+    {id:"p3",text:"Pack your first-night bag last — keep it separate and accessible",note:"After a 2-hour drive and a full day of moving, you will not want to dig through boxes.",subtasks:[
       {id:"p3a",text:"Toiletries, skincare, medications — enough for 3 days"},
       {id:"p3b",text:"Phone charger, laptop charger, any work devices"},
       {id:"p3c",text:"Change of clothes + sleep clothes"},
@@ -394,8 +331,8 @@ const SECTIONS = [
       {id:"p3f",text:"Anything valuable that should not go in the moving truck"},
     ]},
   ]},
-  { id:"moving", title:"Moving Day", icon:"07", phase:"The Day Of", tasks:[
-    { id:"m1", text:"Organize the actual move — do this 2–3 weeks ahead", note:"Two hours is not a quick run. This is a real move. Plan it like one.", subtasks:[
+  {id:"moving",title:"Moving Day",icon:"07",phase:"The Day Of",tasks:[
+    {id:"m1",text:"Organize the actual move — do this 2–3 weeks ahead",note:"Two hours is not a quick run. This is a real move. Plan it like one.",subtasks:[
       {id:"m1a",text:"Book the moving truck or van — reserve early, especially weekends"},
       {id:"m1b",text:"Confirm who's helping you — be specific about time and what you need"},
       {id:"m1c",text:"Plan the truck route — check for low clearances, tolls, weigh stations"},
@@ -403,46 +340,46 @@ const SECTIONS = [
       {id:"m1e",text:"Know his building's parking situation for a large vehicle"},
       {id:"m1f",text:"Plan food for helpers — people work harder when fed"},
     ]},
-    { id:"m2", text:"Final walkthrough — your $525 deposit depends on this", note:"Kurt (573-738-0010) has 7 days to return your deposit after you're out and keys are back. Nail holes are okay but anything dirty or damaged gets deducted. Leave it cleaner than you found it.", subtasks:[
+    {id:"m2",text:"Final walkthrough — your $525 deposit depends on this",note:"Kurt (573-738-0010) has 7 days to return your deposit after you're out and keys are back. Leave it cleaner than you found it.",subtasks:[
       {id:"m2a",text:"Photograph every room — walls, floors, ceilings, fixtures. Date-stamped."},
       {id:"m2b",text:"Every closet, every cabinet, every drawer — open them all"},
       {id:"m2c",text:"Under every piece of furniture before it moves"},
       {id:"m2d",text:"Check the fridge, freezer, and pantry — clear completely"},
-      {id:"m2e",text:"Clean thoroughly — lease is explicit that dirty = deducted from deposit"},
+      {id:"m2e",text:"Clean thoroughly — dirty = deducted from deposit"},
       {id:"m2f",text:"Check yard / exterior is clean and tidy (lease requires it)"},
       {id:"m2g",text:"Turn off all lights, fans, HVAC"},
       {id:"m2h",text:"Return all keys to Kurt — the 7-day deposit clock starts here"},
       {id:"m2i",text:"Email kurt454@live.com confirming you've vacated and returned keys"},
       {id:"m2j",text:"Write down today's date — Kurt owes your $525 back within 7 days"},
     ]},
-    { id:"m3", text:"The drive — don't underestimate it", subtasks:[
+    {id:"m3",text:"The drive — don't underestimate it",subtasks:[
       {id:"m3a",text:"Fill gas before loading or immediately after"},
       {id:"m3b",text:"Have water and snacks — you'll be exhausted"},
       {id:"m3c",text:"Share ETA with someone who isn't in the truck"},
       {id:"m3d",text:"Confirm where to park / unload at his place before you arrive"},
     ]},
   ]},
-  { id:"settle", title:"Settling In", icon:"08", phase:"First Week & Beyond", tasks:[
-    { id:"se1", text:"Unpack with intention — not all at once", note:"Prioritize the bedroom and bathroom first. The rest can wait a few days.", subtasks:[
+  {id:"settle",title:"Settling In",icon:"08",phase:"First Week & Beyond",tasks:[
+    {id:"se1",text:"Unpack with intention — not all at once",note:"Prioritize the bedroom and bathroom first. The rest can wait a few days.",subtasks:[
       {id:"se1a",text:"First-night bag — unpack immediately, you know where it is"},
       {id:"se1b",text:"Bedroom — set it up so you can sleep well that night"},
       {id:"se1c",text:"Bathroom — your toiletries and personal items get a home"},
       {id:"se1d",text:"Kitchen — find places for your things together, not alone"},
       {id:"se1e",text:"Living areas — take your time, make it feel like both of yours"},
     ]},
-    { id:"se2", text:"Administrative tail — wrap these up within 30 days", subtasks:[
+    {id:"se2",text:"Administrative tail — wrap these up within 30 days",subtasks:[
       {id:"se2a",text:"Update driver's license at new DMV (30-day requirement in most states)"},
       {id:"se2b",text:"Update vehicle registration if moving to a new county / state"},
       {id:"se2c",text:"Find a new primary care doctor, therapist, and pharmacy in the area"},
       {id:"se2d",text:"Locate nearest urgent care, grocery store, pharmacy"},
     ]},
-    { id:"se3", text:"Follow up on your $525 deposit from Kurt Owens", note:"Your lease says 7 days after full move-out + keys returned. If you don't have it by then, follow up in writing first, then small claims court is an option in Arkansas.", subtasks:[
+    {id:"se3",text:"Follow up on your $525 deposit from Kurt Owens",note:"Your lease says 7 days after full move-out + keys returned. Small claims court is an option in Arkansas if needed.",subtasks:[
       {id:"se3a",text:"Mark your calendar for 7 days after move-out — that's the deadline"},
       {id:"se3b",text:"If no check by day 7, email kurt454@live.com requesting it formally"},
-      {id:"se3c",text:"Review any itemization carefully — nail holes are listed as a deduction in your lease"},
+      {id:"se3c",text:"Review any itemization carefully — nail holes are a listed deduction in your lease"},
       {id:"se3d",text:"Dispute unjustified charges in writing — you have the photos"},
     ]},
-    { id:"se4", text:"Find a new job in the area", note:"Care coordinators are in high demand. Your caseload management experience — 48 members — is a strong resume point.", subtasks:[
+    {id:"se4",text:"Find a new job in the area",note:"Care coordinators are in high demand. Your 48-member caseload experience is a strong resume point.",subtasks:[
       {id:"se4a",text:"Update your resume to reflect your role at Empower Healthcare Solutions"},
       {id:"se4b",text:"Search for care coordinator and case manager roles in new area"},
       {id:"se4c",text:"Check if your state requires any license transfer or re-registration"},
@@ -452,252 +389,176 @@ const SECTIONS = [
   ]},
 ];
 
-const USERS = {
-  shea: { label: "Shea", color: "#9a7a54" },
-  him:  { label: "Him",  color: "#4a7a9a" },
-};
+const USERS={shea:{label:"Shea",color:"#9a7a54"},him:{label:"Him",color:"#4a7a9a"}};
+const STORAGE_KEY="moving-checks-v2";
 
-// ─── State ────────────────────────────────────────────────────────────────────
-let db = null;
-let dbRef = null;
-let currentUser = null;
-let checks = {};
-let openSections = {};
-let expanded = {};
+let currentUser=null;
+let checks={};
+let openSections={};
+let expanded={};
 
-// Build empty checks
-for (const s of SECTIONS) {
-  openSections[s.id] = true;
-  for (const t of s.tasks) {
-    checks[t.id] = null;
-    for (const sub of t.subtasks || []) checks[sub.id] = null;
+// Init checks and open state
+for(const s of SECTIONS){
+  openSections[s.id]=true;
+  for(const t of s.tasks){
+    checks[t.id]=null;
+    for(const sub of t.subtasks||[])checks[sub.id]=null;
   }
 }
 
-// ─── Firebase setup ───────────────────────────────────────────────────────────
-window.connectDB = async function() {
-  const url = document.getElementById('db-url').value.trim();
-  const err = document.getElementById('url-error');
-  const status = document.getElementById('connect-status');
-  err.textContent = '';
-
-  if (!url || !url.startsWith('https://')) {
-    err.textContent = 'Please enter a valid Firebase URL (starts with https://)';
-    return;
-  }
-
-  status.textContent = 'Connecting...';
-  try {
-    const app = initializeApp({ databaseURL: url }, 'moving-app');
-    db = getDatabase(app);
-    dbRef = ref(db, 'checks');
-    // Try a read to validate
-    await get(dbRef);
-    status.textContent = '';
-    document.getElementById('user-btns').style.display = 'flex';
-    document.querySelector('[onclick="connectDB()"]').style.display = 'none';
-    document.getElementById('db-url').disabled = true;
-    // Save URL for convenience
-    try { localStorage.setItem('moving-db-url', url); } catch(_) {}
-  } catch(e) {
-    status.textContent = '';
-    err.textContent = 'Could not connect. Check your URL and make sure the database rules allow read/write.';
-    db = null; dbRef = null;
-  }
-};
-
-window.startApp = function(user) {
-  currentUser = user;
-  document.getElementById('setup').style.display = 'none';
-  document.getElementById('app').style.display = 'block';
-
-  // Update header
-  const u = USERS[user];
-  document.getElementById('user-dot').style.background = u.color;
-  document.getElementById('user-name-display').style.color = u.color;
-  document.getElementById('user-name-display').textContent = `Signed in as ${u.label}`;
-
-  renderAll();
-
-  // Subscribe to Firebase
-  onValue(dbRef, (snapshot) => {
-    const data = snapshot.val() || {};
-    checks = { ...checks, ...data };
-    renderAll();
-    setSyncStatus('synced');
-  });
-};
-
-window.switchUser = function() {
-  document.getElementById('app').style.display = 'none';
-  document.getElementById('setup').style.display = 'flex';
-  document.getElementById('user-btns').style.display = 'flex';
-  document.querySelector('[onclick="connectDB()"]').style.display = 'none';
-  document.getElementById('db-url').disabled = true;
-  currentUser = null;
-};
-
-// ─── Toggle ───────────────────────────────────────────────────────────────────
-window.toggle = async function(id) {
-  if (!currentUser || !dbRef) return;
-  const newVal = checks[id] ? null : currentUser;
-  checks[id] = newVal;
-  renderAll();
-  setSyncStatus('saving');
-  try {
-    await update(dbRef, { [id]: newVal });
-    setSyncStatus('synced');
-  } catch(e) {
-    setSyncStatus('error saving');
-  }
-};
-
-window.toggleSection = function(id) {
-  openSections[id] = !openSections[id];
-  renderAll();
-};
-
-window.toggleExpand = function(id) {
-  expanded[id] = !expanded[id];
-  renderAll();
-};
-
-function setSyncStatus(msg) {
-  const el = document.getElementById('sync-status');
-  el.textContent = msg;
-  el.className = 'sync-status' + (msg === 'saving' ? ' saving' : '');
+function loadChecks(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||"{}");
+    for(const k in saved) if(k in checks) checks[k]=saved[k];
+  }catch(_){}
 }
 
-// ─── Render ───────────────────────────────────────────────────────────────────
-function countProgress(tasks) {
-  let total = 0, done = 0;
-  for (const t of tasks) {
-    total++; if (checks[t.id]) done++;
-    for (const s of t.subtasks || []) { total++; if (checks[s.id]) done++; }
-  }
-  return { total, done };
+function saveChecks(){
+  try{ localStorage.setItem(STORAGE_KEY,JSON.stringify(checks)); }catch(_){}
 }
 
-function renderAll() {
-  let grandTotal = 0, grandDone = 0;
+window.startApp=function(user){
+  currentUser=user;
+  loadChecks();
+  document.getElementById('pick').style.display='none';
+  document.getElementById('app').style.display='block';
+  const u=USERS[user];
+  document.getElementById('user-dot').style.background=u.color;
+  document.getElementById('user-name-display').style.color=u.color;
+  document.getElementById('user-name-display').textContent=`Signed in as ${u.label}`;
+  renderAll();
+};
 
-  const container = document.getElementById('sections-container');
-  container.innerHTML = '';
+window.switchUser=function(){
+  document.getElementById('app').style.display='none';
+  document.getElementById('pick').style.display='flex';
+  currentUser=null;
+};
 
-  for (const section of SECTIONS) {
-    const { total, done } = countProgress(section.tasks);
-    grandTotal += total; grandDone += done;
-    const pct = total ? Math.round(done / total * 100) : 0;
-    const allDone = done === total;
-    const isOpen = openSections[section.id];
+window.toggle=function(id){
+  if(!currentUser)return;
+  checks[id]=checks[id]?null:currentUser;
+  saveChecks();
+  renderAll();
+};
 
-    const sec = document.createElement('div');
-    sec.className = 'section';
+window.toggleSection=function(id){
+  openSections[id]=!openSections[id];
+  renderAll();
+};
 
-    sec.innerHTML = `
+window.toggleExpand=function(id){
+  expanded[id]=!expanded[id];
+  renderAll();
+};
+
+function countProgress(tasks){
+  let total=0,done=0;
+  for(const t of tasks){
+    total++;if(checks[t.id])done++;
+    for(const s of t.subtasks||[]){total++;if(checks[s.id])done++;}
+  }
+  return{total,done};
+}
+
+function renderAll(){
+  let gt=0,gd=0;
+  const container=document.getElementById('sections-container');
+  container.innerHTML='';
+
+  for(const section of SECTIONS){
+    const{total,done}=countProgress(section.tasks);
+    gt+=total;gd+=done;
+    const pct=total?Math.round(done/total*100):0;
+    const allDone=done===total;
+    const isOpen=openSections[section.id];
+    const isHis=section.id==='his';
+
+    const sec=document.createElement('div');
+    sec.className='section';
+    sec.innerHTML=`
       <button class="section-btn" onclick="toggleSection('${section.id}')">
         <div class="section-left">
-          <span class="section-icon" style="color:${allDone ? '#9a7a54' : section.id === 'his' ? '#4a7a9a' : '#2e2e2e'}">${section.icon}</span>
+          <span class="section-icon" style="color:${allDone?'#9a7a54':isHis?'#4a7a9a':'#2e2e2e'}">${section.icon}</span>
           <div>
-            <div class="section-title${allDone ? ' done' : ''}" style="${section.id === 'his' && !allDone ? 'color:#4a7a9a' : ''}">${section.title}</div>
+            <div class="section-title${allDone?' done':''}" style="${isHis&&!allDone?'color:#4a7a9a':''}">${section.title}</div>
             <div class="section-phase">${section.phase}</div>
           </div>
         </div>
         <div class="section-right">
-          <div class="section-bar-track"><div class="section-bar-fill" style="width:${pct}%"></div></div>
+          <div class="section-bar-track"><div class="section-bar-fill" style="width:${pct}%;background:${isHis?'#4a7a9a':'#9a7a54'}"></div></div>
           <span class="section-count">${done}/${total}</span>
-          <span class="section-toggle">${isOpen ? '−' : '+'}</span>
+          <span class="section-toggle">${isOpen?'−':'+'}</span>
         </div>
-      </button>
-    `;
+      </button>`;
 
-    if (isOpen) {
-      const tasksDiv = document.createElement('div');
-      tasksDiv.className = 'section-tasks';
+    if(isOpen){
+      const tasksDiv=document.createElement('div');
+      tasksDiv.className='section-tasks';
 
-      for (const task of section.tasks) {
-        const checker = checks[task.id];
-        const isDone = !!checker;
-        const checkerUser = checker ? USERS[checker] : null;
-        const hasSubtasks = task.subtasks?.length > 0;
-        const isExp = expanded[task.id];
-        const subDone = (task.subtasks || []).filter(s => checks[s.id]).length;
-        const cbColor = isDone ? checkerUser.color : '#282828';
-        const ownerUser = task.owner ? USERS[task.owner] : null;
+      for(const task of section.tasks){
+        const checker=checks[task.id];
+        const isDone=!!checker;
+        const cu=checker?USERS[checker]:null;
+        const hasS=task.subtasks&&task.subtasks.length>0;
+        const isExp=expanded[task.id];
+        const subDone=(task.subtasks||[]).filter(s=>checks[s.id]).length;
+        const cbColor=isDone?cu.color:'#282828';
+        const ownerUser=task.owner?USERS[task.owner]:null;
 
-        const taskDiv = document.createElement('div');
-        taskDiv.className = 'task';
-        taskDiv.innerHTML = `
+        const taskDiv=document.createElement('div');
+        taskDiv.className='task';
+        taskDiv.innerHTML=`
           <div class="task-row">
-            <button class="check-btn task-check" onclick="toggle('${task.id}')"
-              style="border:1px solid ${cbColor};background:${isDone ? checkerUser.color : 'transparent'}">
-              ${isDone ? `<svg width="7" height="5" viewBox="0 0 8 6" fill="none"><path d="M1 3L3 5L7 1" stroke="#0d0d0d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>` : ''}
+            <button class="check-btn task-check" onclick="toggle('${task.id}')" style="border:1px solid ${cbColor};background:${isDone?cu.color:'transparent'}">
+              ${isDone?`<svg width="7" height="5" viewBox="0 0 8 6" fill="none"><path d="M1 3L3 5L7 1" stroke="#0d0d0d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`:''}
             </button>
             <div class="task-body">
               <div class="task-top">
-                <span class="task-text${isDone ? ' done' : ''}">${task.text}</span>
-                ${ownerUser && !isDone ? `<span class="checker-tag" style="color:${ownerUser.color};opacity:0.5;border:1px solid ${ownerUser.color}33;border-radius:2px;padding:1px 6px;">${ownerUser.label}'s job</span>` : ''}
-                ${isDone ? `<span class="checker-tag" style="color:${checkerUser.color}">${checkerUser.label}</span>` : ''}
+                <span class="task-text${isDone?' done':''}">${task.text}</span>
+                ${ownerUser&&!isDone?`<span class="owner-tag" style="color:${ownerUser.color};border:1px solid ${ownerUser.color}44">${ownerUser.label}'s job</span>`:''}
+                ${isDone?`<span class="checker-tag" style="color:${cu.color}">${cu.label}</span>`:''}
               </div>
-              ${task.note ? `<div class="task-note">${task.note}</div>` : ''}
-              ${hasSubtasks ? `
-                <button class="expand-btn" onclick="toggleExpand('${task.id}')" style="color:${isExp ? '#9a7a54' : '#3e3e3e'}">
-                  <span style="color:${subDone === task.subtasks.length && subDone > 0 ? '#9a7a54' : 'inherit'}">${subDone}/${task.subtasks.length} steps</span>
-                  <span class="expand-arrow">${isExp ? '▲' : '▼'}</span>
-                </button>` : ''}
+              ${task.note?`<div class="task-note">${task.note}</div>`:''}
+              ${hasS?`<button class="expand-btn" onclick="toggleExpand('${task.id}')" style="color:${isExp?'#9a7a54':'#3e3e3e'}">
+                <span style="color:${subDone===task.subtasks.length&&subDone>0?'#9a7a54':'inherit'}">${subDone}/${task.subtasks.length} steps</span>
+                <span class="expand-arrow">${isExp?'▲':'▼'}</span>
+              </button>`:''}
             </div>
-          </div>
-        `;
+          </div>`;
 
-        if (hasSubtasks && isExp) {
-          const subsDiv = document.createElement('div');
-          subsDiv.className = 'subtasks';
-          for (const sub of task.subtasks) {
-            const sc = checks[sub.id];
-            const sd = !!sc;
-            const su = sc ? USERS[sc] : null;
-            const scColor = sd ? su.color : '#1e1e1e';
-            subsDiv.innerHTML += `
+        if(hasS&&isExp){
+          const subsDiv=document.createElement('div');
+          subsDiv.className='subtasks';
+          for(const sub of task.subtasks){
+            const sc=checks[sub.id];
+            const sd=!!sc;
+            const su=sc?USERS[sc]:null;
+            subsDiv.innerHTML+=`
               <div class="subtask">
-                <button class="check-btn sub-check" onclick="toggle('${sub.id}')"
-                  style="border:1px solid ${scColor};background:${sd ? su.color : 'transparent'}">
-                  ${sd ? `<svg width="6" height="4" viewBox="0 0 8 6" fill="none"><path d="M1 3L3 5L7 1" stroke="#0d0d0d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>` : ''}
+                <button class="check-btn sub-check" onclick="toggle('${sub.id}')" style="border:1px solid ${sd?su.color:'#1e1e1e'};background:${sd?su.color:'transparent'}">
+                  ${sd?`<svg width="6" height="4" viewBox="0 0 8 6" fill="none"><path d="M1 3L3 5L7 1" stroke="#0d0d0d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>`:''}
                 </button>
-                <span class="sub-text${sd ? ' done' : ''}">${sub.text}</span>
-                ${sd ? `<span class="sub-checker" style="color:${su.color}">${su.label}</span>` : ''}
-              </div>
-            `;
+                <span class="sub-text${sd?' done':''}">${sub.text}</span>
+                ${sd?`<span class="sub-checker" style="color:${su.color}">${su.label}</span>`:''}
+              </div>`;
           }
           taskDiv.appendChild(subsDiv);
         }
-
         tasksDiv.appendChild(taskDiv);
       }
       sec.appendChild(tasksDiv);
     }
-
     container.appendChild(sec);
   }
 
-  // Update overall
-  const pct = grandTotal ? Math.round(grandDone / grandTotal * 100) : 0;
-  document.getElementById('overall-text').textContent = `${grandDone} of ${grandTotal} complete`;
-  document.getElementById('overall-pct').textContent = `${pct}%`;
-  document.getElementById('overall-pct').style.color = pct === 100 ? '#9a7a54' : '#3e3e3e';
-  document.getElementById('overall-bar').style.width = `${pct}%`;
-  document.getElementById('footer-msg').textContent = pct === 100 ? "Done. You're home." : "Work through it in order.";
+  const pct=gt?Math.round(gd/gt*100):0;
+  document.getElementById('overall-text').textContent=`${gd} of ${gt} complete`;
+  document.getElementById('overall-pct').textContent=`${pct}%`;
+  document.getElementById('overall-pct').style.color=pct===100?'#9a7a54':'#3e3e3e';
+  document.getElementById('overall-bar').style.width=`${pct}%`;
+  document.getElementById('footer-msg').textContent=pct===100?"Done. You're home.":"Work through it in order.";
 }
-
-// ─── Init ─────────────────────────────────────────────────────────────────────
-document.getElementById('loading').style.display = 'none';
-document.getElementById('setup').style.display = 'flex';
-
-// Pre-fill saved URL if exists
-try {
-  const saved = localStorage.getItem('moving-db-url');
-  if (saved) document.getElementById('db-url').value = saved;
-} catch(_) {}
 </script>
-
 </body>
 </html>
