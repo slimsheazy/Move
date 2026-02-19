@@ -133,7 +133,7 @@ button{cursor:pointer;font-family:inherit}
 <script>
 // ─────────────────────────────────────────────────────────────────────────────
 // PASTE YOUR SUPABASE DETAILS HERE
-const SUPABASE_URL = "https://tieuwnqxkuamkroxhshu.supabase.co";
+const SUPABASE_URL = "https://tieuwnqxkuamkroxhshu.sb.co";
 const SUPABASE_ANON_KEY = "sb_publishable_nY3IfuxM4kU3LGLVcFGRow_Je0xLv0r";
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -398,7 +398,7 @@ let currentUser=null;
 let checks={};
 let openSections={};
 let expanded={};
-let supabase=null;
+let sb=null;
 
 for(const s of SECTIONS){
   openSections[s.id]=true;
@@ -411,15 +411,15 @@ for(const s of SECTIONS){
 // ── Supabase client (no npm, just REST + realtime via CDN) ────────────────────
 async function initSupabase(){
   // Load Supabase from CDN
-  await loadScript("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js");
-  supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+  await loadScript("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/sb.min.js");
+  sb = window.sb.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   // Load existing checks
-  const {data}=await supabase.from('checks').select('id,checked_by');
+  const {data}=await sb.from('checks').select('id,checked_by');
   if(data) for(const row of data) if(row.id in checks) checks[row.id]=row.checked_by||null;
 
   // Subscribe to real-time changes
-  supabase.channel('checks-channel')
+  sb.channel('checks-channel')
     .on('postgres_changes',{event:'*',schema:'public',table:'checks'},payload=>{
       const{id,checked_by}=payload.new||payload.old||{};
       if(id && id in checks){
@@ -472,8 +472,8 @@ window.toggle=async function(id){
   checks[id]=newVal;
   renderAll();
   flashSync();
-  if(supabase){
-    await supabase.from('checks').upsert({id,checked_by:newVal},{onConflict:'id'});
+  if(sb){
+    await sb.from('checks').upsert({id,checked_by:newVal},{onConflict:'id'});
   }
 };
 
