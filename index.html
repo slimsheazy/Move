@@ -411,7 +411,7 @@ for(const s of SECTIONS){
 // ── Supabase client (no npm, just REST + realtime via CDN) ────────────────────
 async function initSupabase(){
   // Load Supabase from CDN
-  await loadScript("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/sb.min.js");
+  await loadScript("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js");
   sb = window.sb.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
   // Load existing checks
