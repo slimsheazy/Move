@@ -3,15 +3,13 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Moving Plan — Shea & Him</title>
+<title>Moving Plan — Shea & Shawn</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{font-size:16px}
 body{background:#0d0d0d;color:#d8d4cc;font-family:Georgia,'Times New Roman',serif;min-height:100vh;padding-bottom:100px}
 button{cursor:pointer;font-family:inherit}
 
-/* Pick screen */
 #pick{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:32px;text-align:center}
 #pick .eyebrow{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.25em;color:#444;text-transform:uppercase;margin-bottom:20px}
 #pick h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,6vw,2.6rem);font-weight:400;color:#ddd9d1;line-height:1.2;margin-bottom:48px}
@@ -22,13 +20,15 @@ button{cursor:pointer;font-family:inherit}
 .user-btn.him{border-color:#4a7a9a;color:#4a7a9a}.user-btn.him:hover{background:#1a2f3d}
 #pick .note{margin-top:28px;font-family:'DM Mono',monospace;font-size:.6rem;color:#2e2e2e;letter-spacing:.08em;line-height:1.8}
 
-/* App */
 #app{display:none;max-width:700px;margin:0 auto;padding:0 20px}
 .app-header{padding:44px 0 32px}
 .header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:28px;flex-wrap:wrap;gap:10px}
 .user-pill{display:flex;align-items:center;gap:8px}
 .user-dot{width:8px;height:8px;border-radius:50%}
 .user-name{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.15em;text-transform:uppercase}
+.header-right{display:flex;align-items:center;gap:12px}
+.sync-badge{font-family:'DM Mono',monospace;font-size:.55rem;letter-spacing:.1em;color:#2a2a2a;transition:color .3s}
+.sync-badge.active{color:#4a7a9a}
 .switch-btn{background:none;border:1px solid #1e1e1e;border-radius:3px;padding:4px 10px;font-family:'DM Mono',monospace;font-size:.55rem;color:#3a3a3a;letter-spacing:.12em;text-transform:uppercase;transition:border-color .12s,color .12s}
 .switch-btn:hover{border-color:#333;color:#666}
 .eyebrow-sm{font-family:'DM Mono',monospace;font-size:.6rem;letter-spacing:.25em;color:#484848;text-transform:uppercase;margin-bottom:16px}
@@ -44,7 +44,6 @@ button{cursor:pointer;font-family:inherit}
 .progress-track{background:#191919;height:2px;border-radius:1px}
 .progress-fill{height:2px;background:linear-gradient(90deg,#9a7a54,#c4a06a);border-radius:1px;transition:width .5s ease}
 
-/* Sections */
 .section{border-top:1px solid #191919}
 .section-btn{width:100%;background:transparent;border:none;padding:22px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:16px;text-align:left;transition:background .1s;border-radius:4px}
 .section-btn:hover{background:#111}
@@ -55,12 +54,11 @@ button{cursor:pointer;font-family:inherit}
 .section-phase{font-family:'DM Mono',monospace;font-size:.54rem;color:#2e2e2e;letter-spacing:.1em;margin-top:5px}
 .section-right{display:flex;align-items:center;gap:12px;padding-top:4px;flex-shrink:0}
 .section-bar-track{width:44px;height:1px;background:#1e1e1e}
-.section-bar-fill{height:1px;background:#9a7a54;transition:width .3s}
+.section-bar-fill{height:1px;transition:width .3s}
 .section-count{font-family:'DM Mono',monospace;font-size:.54rem;color:#333;letter-spacing:.08em}
 .section-toggle{color:#2e2e2e;font-family:monospace;font-size:.9rem}
 .section-tasks{padding-bottom:10px}
 
-/* Tasks */
 .task{border-radius:3px;transition:background .1s}
 .task:hover{background:rgba(255,255,255,.018)}
 .task-row{display:flex;align-items:flex-start;padding:13px 8px 11px 22px;gap:13px}
@@ -79,11 +77,10 @@ button{cursor:pointer;font-family:inherit}
 .expand-btn:hover{border-color:#333}
 .expand-arrow{opacity:.35;font-size:.5rem}
 
-/* Subtasks */
 .subtasks{margin-left:50px;border-left:1px solid #191919;padding-left:18px;padding-bottom:6px}
 .subtask{display:flex;align-items:center;gap:11px;padding:8px 6px;border-radius:3px;transition:background .1s}
 .subtask:hover{background:rgba(255,255,255,.015)}
-.sub-text{font-size:.81rem;color:#565250;line-height:1.5;flex:1;transition:color .2s}
+.sub-text{font-size:.81rem;color:#565250;line-height:1.5;flex:1}
 .sub-text.done{color:#2e2e2e;text-decoration:line-through}
 .sub-checker{font-family:'DM Mono',monospace;font-size:.5rem;letter-spacing:.1em;opacity:.7;flex-shrink:0}
 
@@ -92,18 +89,16 @@ button{cursor:pointer;font-family:inherit}
 </head>
 <body>
 
-<!-- Who are you? -->
 <div id="pick">
   <div class="eyebrow">Shared Relocation Plan</div>
   <h1>Moving Out,<br/><em>Starting Over Right</em></h1>
   <div class="btns">
     <button class="user-btn shea" onclick="startApp('shea')">Shea</button>
-    <button class="user-btn him" onclick="startApp('him')">Him</button>
+    <button class="user-btn him" onclick="startApp('him')">Shawn</button>
   </div>
-  <p class="note">Your checks save on your device.<br/>Both of you can track your own progress.</p>
+  <p class="note">Checks sync in real time between both of you.</p>
 </div>
 
-<!-- Main app -->
 <div id="app">
   <div class="app-header">
     <div class="header-top">
@@ -111,14 +106,17 @@ button{cursor:pointer;font-family:inherit}
         <div class="user-dot" id="user-dot"></div>
         <span class="user-name" id="user-name-display"></span>
       </div>
-      <button class="switch-btn" onclick="switchUser()">Switch</button>
+      <div class="header-right">
+        <span class="sync-badge" id="sync-badge">●&nbsp;live</span>
+        <button class="switch-btn" onclick="switchUser()">Switch</button>
+      </div>
     </div>
     <div class="eyebrow-sm">Shared Relocation Plan</div>
     <h1 class="title">Moving Out,<br/><em>Starting Over Right</em></h1>
     <p class="subtitle">Harrison, AR → his place &nbsp;·&nbsp; 2 hours away<br/>Quitting Empower Healthcare Solutions &nbsp;·&nbsp; 48-member caseload handoff</p>
     <div class="legend">
       <div class="legend-item"><div class="legend-dot" style="background:#9a7a54"></div><span class="legend-label">Shea</span></div>
-      <div class="legend-item"><div class="legend-dot" style="background:#4a7a9a"></div><span class="legend-label">Him</span></div>
+      <div class="legend-item"><div class="legend-dot" style="background:#4a7a9a"></div><span class="legend-label">Shawn</span></div>
     </div>
     <div class="overall-progress">
       <div class="progress-row">
@@ -133,6 +131,12 @@ button{cursor:pointer;font-family:inherit}
 </div>
 
 <script>
+// ─────────────────────────────────────────────────────────────────────────────
+// PASTE YOUR SUPABASE DETAILS HERE
+const SUPABASE_URL = "https://tieuwnqxkuamkroxhshu.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_nY3IfuxM4kU3LGLVcFGRow_Je0xLv0r";
+// ─────────────────────────────────────────────────────────────────────────────
+
 const SECTIONS=[
   {id:"job",title:"Leaving Your Job",icon:"01",phase:"Do First — 4–6 Weeks Out",tasks:[
     {id:"j0",text:"Decide your last day and write your resignation letter",note:"Standard is 2 weeks, but with 48 active members on your caseload, offering 3–4 weeks is professional. Check your offer letter for any contractual notice requirements.",subtasks:[
@@ -195,35 +199,35 @@ const SECTIONS=[
     ]},
     {id:"a4",text:"Tell family and close friends your new address",subtasks:[]},
   ]},
-  {id:"his",title:"His To-Do List",icon:"03",phase:"His Jobs — Throughout the Move",tasks:[
-    {id:"h1",owner:"him",text:"Make space for her stuff — before she arrives",note:"She's moving into your place. She needs real, permanent space — not a corner of a closet. Do this before moving day.",subtasks:[
+  {id:"his",title:"Shawn's To-Do List",icon:"03",phase:"Shawn's Jobs — Throughout the Move",tasks:[
+    {id:"h1",owner:"shawn",text:"Make space for her stuff — before she arrives",note:"She's moving into your place. She needs real, permanent space — not a corner of a closet. Do this before moving day.",subtasks:[
       {id:"h1a",text:"Clear out drawer/closet space for her clothes"},
       {id:"h1b",text:"Make room in the bathroom for her things"},
       {id:"h1c",text:"Clear kitchen cabinet space for her stuff"},
       {id:"h1d",text:"Decide together where her furniture and decor will go"},
     ]},
-    {id:"h2",owner:"him",text:"Book the moving truck or van",note:"Two hours requires a real truck. Reserve it early — weekends book out fast.",subtasks:[
+    {id:"h2",owner:"shawn",text:"Book the moving truck or van",note:"Two hours requires a real truck. Reserve it early — weekends book out fast.",subtasks:[
       {id:"h2a",text:"Pick a truck rental — Uhaul, Penske, Enterprise"},
       {id:"h2b",text:"Reserve it for moving day ASAP"},
       {id:"h2c",text:"Confirm you can drive it — some require extra insurance"},
       {id:"h2d",text:"Know the parking situation at both ends"},
     ]},
-    {id:"h3",owner:"him",text:"Recruit and coordinate moving help",note:"She can't load a truck alone. Organize people, give them a time, and feed them.",subtasks:[
+    {id:"h3",owner:"shawn",text:"Recruit and coordinate moving help",note:"She can't load a truck alone. Organize people, give them a time, and feed them.",subtasks:[
       {id:"h3a",text:"Line up at least 2 people to help on moving day"},
       {id:"h3b",text:"Give them a specific arrival time, not 'sometime in the morning'"},
       {id:"h3c",text:"Plan food — pizza, snacks, drinks for helpers"},
     ]},
-    {id:"h4",owner:"him",text:"Drive down to help pack or do a pre-move run",note:"If there's furniture or heavy items, one trip before moving day makes the actual day much easier.",subtasks:[
+    {id:"h4",owner:"shawn",text:"Drive down to help pack or do a pre-move run",note:"One trip before moving day makes the actual day much easier.",subtasks:[
       {id:"h4a",text:"Coordinate a weekend trip to her place to help sort/pack"},
       {id:"h4b",text:"Bring extra boxes if you have them"},
     ]},
-    {id:"h5",owner:"him",text:"Prepare your place for her arrival",subtasks:[
+    {id:"h5",owner:"shawn",text:"Prepare your place for her arrival",subtasks:[
       {id:"h5a",text:"Deep clean before she moves in"},
       {id:"h5b",text:"Make sure there's food in the fridge for when she arrives exhausted"},
       {id:"h5c",text:"Have her key ready to hand over"},
       {id:"h5d",text:"Clear a landing zone — somewhere to put boxes without chaos"},
     ]},
-    {id:"h6",owner:"him",text:"Talk through the shared living logistics",note:"Better to have these conversations before she moves in than after.",subtasks:[
+    {id:"h6",owner:"shawn",text:"Talk through the shared living logistics",note:"Better to have these conversations before she moves in than after.",subtasks:[
       {id:"h6a",text:"Discuss how bills/rent will be split"},
       {id:"h6b",text:"Talk through household chores and expectations"},
       {id:"h6c",text:"Discuss guests, overnight visitors, personal space"},
@@ -389,15 +393,13 @@ const SECTIONS=[
   ]},
 ];
 
-const USERS={shea:{label:"Shea",color:"#9a7a54"},him:{label:"Him",color:"#4a7a9a"}};
-const STORAGE_KEY="moving-checks-v2";
-
+const USERS={shea:{label:"Shea",color:"#9a7a54"},him:{label:"Shawn",color:"#4a7a9a"}};
 let currentUser=null;
 let checks={};
 let openSections={};
 let expanded={};
+let supabase=null;
 
-// Init checks and open state
 for(const s of SECTIONS){
   openSections[s.id]=true;
   for(const t of s.tasks){
@@ -406,26 +408,55 @@ for(const s of SECTIONS){
   }
 }
 
-function loadChecks(){
-  try{
-    const saved=JSON.parse(localStorage.getItem(STORAGE_KEY)||"{}");
-    for(const k in saved) if(k in checks) checks[k]=saved[k];
-  }catch(_){}
+// ── Supabase client (no npm, just REST + realtime via CDN) ────────────────────
+async function initSupabase(){
+  // Load Supabase from CDN
+  await loadScript("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js");
+  supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // Load existing checks
+  const {data}=await supabase.from('checks').select('id,checked_by');
+  if(data) for(const row of data) if(row.id in checks) checks[row.id]=row.checked_by||null;
+
+  // Subscribe to real-time changes
+  supabase.channel('checks-channel')
+    .on('postgres_changes',{event:'*',schema:'public',table:'checks'},payload=>{
+      const{id,checked_by}=payload.new||payload.old||{};
+      if(id && id in checks){
+        checks[id]=checked_by||null;
+        renderAll();
+        flashSync();
+      }
+    })
+    .subscribe();
 }
 
-function saveChecks(){
-  try{ localStorage.setItem(STORAGE_KEY,JSON.stringify(checks)); }catch(_){}
+function loadScript(src){
+  return new Promise((res,rej)=>{
+    const s=document.createElement('script');
+    s.src=src;s.onload=res;s.onerror=rej;
+    document.head.appendChild(s);
+  });
 }
 
-window.startApp=function(user){
+function flashSync(){
+  const el=document.getElementById('sync-badge');
+  if(!el)return;
+  el.className='sync-badge active';
+  setTimeout(()=>el.className='sync-badge',1500);
+}
+
+// ── App flow ──────────────────────────────────────────────────────────────────
+window.startApp=async function(user){
   currentUser=user;
-  loadChecks();
   document.getElementById('pick').style.display='none';
   document.getElementById('app').style.display='block';
   const u=USERS[user];
   document.getElementById('user-dot').style.background=u.color;
   document.getElementById('user-name-display').style.color=u.color;
   document.getElementById('user-name-display').textContent=`Signed in as ${u.label}`;
+  renderAll();
+  await initSupabase();
   renderAll();
 };
 
@@ -435,23 +466,21 @@ window.switchUser=function(){
   currentUser=null;
 };
 
-window.toggle=function(id){
+window.toggle=async function(id){
   if(!currentUser)return;
-  checks[id]=checks[id]?null:currentUser;
-  saveChecks();
+  const newVal=checks[id]?null:currentUser;
+  checks[id]=newVal;
   renderAll();
+  flashSync();
+  if(supabase){
+    await supabase.from('checks').upsert({id,checked_by:newVal},{onConflict:'id'});
+  }
 };
 
-window.toggleSection=function(id){
-  openSections[id]=!openSections[id];
-  renderAll();
-};
+window.toggleSection=function(id){openSections[id]=!openSections[id];renderAll()};
+window.toggleExpand=function(id){expanded[id]=!expanded[id];renderAll()};
 
-window.toggleExpand=function(id){
-  expanded[id]=!expanded[id];
-  renderAll();
-};
-
+// ── Render ────────────────────────────────────────────────────────────────────
 function countProgress(tasks){
   let total=0,done=0;
   for(const t of tasks){
@@ -473,6 +502,7 @@ function renderAll(){
     const allDone=done===total;
     const isOpen=openSections[section.id];
     const isHis=section.id==='his';
+    const barColor=isHis?'#4a7a9a':'#9a7a54';
 
     const sec=document.createElement('div');
     sec.className='section';
@@ -486,7 +516,7 @@ function renderAll(){
           </div>
         </div>
         <div class="section-right">
-          <div class="section-bar-track"><div class="section-bar-fill" style="width:${pct}%;background:${isHis?'#4a7a9a':'#9a7a54'}"></div></div>
+          <div class="section-bar-track"><div class="section-bar-fill" style="width:${pct}%;background:${barColor}"></div></div>
           <span class="section-count">${done}/${total}</span>
           <span class="section-toggle">${isOpen?'−':'+'}</span>
         </div>
@@ -495,7 +525,6 @@ function renderAll(){
     if(isOpen){
       const tasksDiv=document.createElement('div');
       tasksDiv.className='section-tasks';
-
       for(const task of section.tasks){
         const checker=checks[task.id];
         const isDone=!!checker;
