@@ -133,8 +133,8 @@ button{cursor:pointer;font-family:inherit}
 <script>
 // ─────────────────────────────────────────────────────────────────────────────
 // PASTE YOUR SUPABASE DETAILS HERE
-const SUPABASE_URL = "https://tieuwnqxkuamkroxhshu.sb.co";
-const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRpZXV3bnF4a3VhbWtyb3hoc2h1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzE0NjEzMDcsImV4cCI6MjA4NzAzNzMwN30.kCSF8Q2o7jSHzV5VznEbtlnM7iZPJuMj2SxHn_okppc";
+const JSONBIN_ID = "699a01c4ae596e708f3d7aeb";
+const JSONBIN_KEY = "$2a$10$dQ3ABJzMKpyfsxZ7fLj/beHdf/wT/gAH7Sd6.FE5ztfE2HRRWo9wu";
 // ─────────────────────────────────────────────────────────────────────────────
 
 const SECTIONS=[
@@ -394,11 +394,14 @@ const SECTIONS=[
 ];
 
 const USERS={shea:{label:"Shea",color:"#9a7a54"},him:{label:"Shawn",color:"#4a7a9a"}};
+const JSONBIN_URL = `https://api.jsonbin.io/v3/b/${JSONBIN_ID}`;
+const HEADERS = {"Content-Type":"application/json","X-Master-Key":JSONBIN_KEY,"X-Bin-Meta":"false"};
+
 let currentUser=null;
 let checks={};
 let openSections={};
 let expanded={};
-let sb=null;
+let pollInterval=null;
 
 for(const s of SECTIONS){
   openSections[s.id]=true;
@@ -408,45 +411,38 @@ for(const s of SECTIONS){
   }
 }
 
-// ── Supabase client (no npm, just REST + realtime via CDN) ────────────────────
-async function initSupabase(){
-  // Load Supabase from CDN
-  await loadScript("https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js");
-  sb = window.sb.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-
-  // Load existing checks
-  const {data}=await sb.from('checks').select('id,checked_by');
-  if(data) for(const row of data) if(row.id in checks) checks[row.id]=row.checked_by||null;
-
-  // Subscribe to real-time changes
-  sb.channel('checks-channel')
-    .on('postgres_changes',{event:'*',schema:'public',table:'checks'},payload=>{
-      const{id,checked_by}=payload.new||payload.old||{};
-      if(id && id in checks){
-        checks[id]=checked_by||null;
-        renderAll();
-        flashSync();
-      }
-    })
-    .subscribe();
+async function loadFromBin(){
+  try{
+    const res=await fetch(JSONBIN_URL,{headers:HEADERS});
+    const data=await res.json();
+    if(data&&data.checks){
+      for(const k in data.checks) if(k in checks) checks[k]=data.checks[k];
+    }
+  }catch(_){}
 }
 
-function loadScript(src){
-  return new Promise((res,rej)=>{
-    const s=document.createElement('script');
-    s.src=src;s.onload=res;s.onerror=rej;
-    document.head.appendChild(s);
-  });
+async function saveToBin(){
+  try{
+    await fetch(JSONBIN_URL,{method:"PUT",headers:HEADERS,body:JSON.stringify({checks})});
+    flashSync();
+  }catch(_){}
+}
+
+function startPolling(){
+  pollInterval=setInterval(async()=>{
+    const before=JSON.stringify(checks);
+    await loadFromBin();
+    if(JSON.stringify(checks)!==before) renderAll();
+  },4000);
 }
 
 function flashSync(){
   const el=document.getElementById('sync-badge');
   if(!el)return;
   el.className='sync-badge active';
-  setTimeout(()=>el.className='sync-badge',1500);
+  setTimeout(()=>el.className='sync-badge',1200);
 }
 
-// ── App flow ──────────────────────────────────────────────────────────────────
 window.startApp=async function(user){
   currentUser=user;
   document.getElementById('pick').style.display='none';
@@ -455,12 +451,13 @@ window.startApp=async function(user){
   document.getElementById('user-dot').style.background=u.color;
   document.getElementById('user-name-display').style.color=u.color;
   document.getElementById('user-name-display').textContent=`Signed in as ${u.label}`;
+  await loadFromBin();
   renderAll();
-  await initSupabase();
-  renderAll();
+  startPolling();
 };
 
 window.switchUser=function(){
+  clearInterval(pollInterval);
   document.getElementById('app').style.display='none';
   document.getElementById('pick').style.display='flex';
   currentUser=null;
@@ -468,13 +465,9 @@ window.switchUser=function(){
 
 window.toggle=async function(id){
   if(!currentUser)return;
-  const newVal=checks[id]?null:currentUser;
-  checks[id]=newVal;
+  checks[id]=checks[id]?null:currentUser;
   renderAll();
-  flashSync();
-  if(sb){
-    await sb.from('checks').upsert({id,checked_by:newVal},{onConflict:'id'});
-  }
+  await saveToBin();
 };
 
 window.toggleSection=function(id){openSections[id]=!openSections[id];renderAll()};
