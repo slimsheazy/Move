@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Packing Guide — Shea</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #ffffff; color: #1a1a1a; font-family: 'DM Mono', monospace; min-height: 100vh; padding-bottom: 100px; }
+button { cursor: pointer; font-family: 'DM Mono', monospace; background: none; border: none; padding: 0; }
+
+.header { max-width: 600px; margin: 0 auto; padding: 56px 28px 36px; }
+.eyebrow { font-size: .57rem; letter-spacing: .22em; color: #aaa; text-transform: uppercase; margin-bottom: 16px; }
+h1 { font-family: ‘DM Serif Display’, serif; font-size: 2.4rem; font-weight: 400; color: #1a1a1a; line-height: 1.1; }
+h1 em { font-style: italic; color: #9a7a54; }
+.tagline { margin-top: 14px; font-size: .65rem; color: #888; letter-spacing: .06em; line-height: 1.9; }
+
+/* Overall progress */
+.prog-wrap { max-width: 600px; margin: 0 auto; padding: 0 28px 32px; }
+.prog-row { display: flex; justify-content: space-between; font-size: .56rem; color: #bbb; letter-spacing: .1em; margin-bottom: 8px; }
+.prog-row .pct { color: #9a7a54; }
+.track { height: 2px; background: #eee; border-radius: 2px; }
+.fill { height: 2px; background: linear-gradient(90deg, #9a7a54, #c4a06a); border-radius: 2px; transition: width .4s; }
+
+/* Supplies box */
+.supplies { max-width: 600px; margin: 0 auto 8px; padding: 0 28px; }
+.supplies-inner { background: #f9f6f1; border-left: 3px solid #9a7a54; border-radius: 0 4px 4px 0; padding: 20px 20px; }
+.sup-label { font-size: .54rem; letter-spacing: .2em; color: #9a7a54; text-transform: uppercase; margin-bottom: 12px; }
+.sup-title { font-family: ‘DM Serif Display’, serif; font-size: 1.05rem; color: #1a1a1a; margin-bottom: 10px; }
+.sup-body { font-size: .67rem; color: #888; line-height: 1.9; }
+.sup-body strong { color: #555; font-weight: 400; }
+
+/* Day sessions */
+.days { max-width: 600px; margin: 24px auto 0; padding: 0 28px; }
+
+.day { border-top: 1px solid #f0f0f0; }
+.day:last-child { border-bottom: 1px solid #f0f0f0; }
+
+.day-btn { width: 100%; display: flex; align-items: flex-start; justify-content: space-between; padding: 20px 0; text-align: left; gap: 16px; }
+.day-btn:hover .day-title { opacity: .7; }
+.day-left { display: flex; gap: 16px; align-items: flex-start; }
+.day-badge { flex-shrink: 0; }
+.day-num { font-size: .5rem; letter-spacing: .2em; color: #ccc; text-transform: uppercase; display: block; margin-bottom: 4px; }
+.day-time { font-size: .52rem; letter-spacing: .1em; color: #bbb; display: block; }
+.day-title { font-family: ‘DM Serif Display’, serif; font-size: 1rem; color: #1a1a1a; line-height: 1.2; }
+.day-title.done { color: #9a7a54; }
+.day-sub { font-size: .56rem; color: #bbb; letter-spacing: .06em; margin-top: 4px; }
+.day-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; padding-top: 2px; }
+.day-count { font-size: .5rem; color: #ccc; letter-spacing: .06em; }
+.day-tog { font-size: .65rem; color: #ccc; }
+
+/* Steps */
+.steps { padding-bottom: 12px; }
+.step { display: flex; align-items: flex-start; gap: 12px; padding: 9px 0 9px 36px; border-radius: 3px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.step:hover { background: #fafafa; margin: 0 -10px; padding-left: 46px; padding-right: 10px; }
+
+.dot { flex-shrink: 0; margin-top: 3px; width: 15px; height: 15px; border-radius: 50%; border: 1.5px solid #e0e0e0; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+.dot.done { border-color: #9a7a54; background: #9a7a54; }
+.dot.done::after { content: ‘’; display: block; width: 8px; height: 5px; border-left: 1.8px solid white; border-bottom: 1.8px solid white; transform: rotate(-45deg) translate(1px, -1px); }
+
+.step-body { flex: 1; }
+.step-text { font-size: .77rem; color: #444; line-height: 1.6; }
+.step-text.done { color: #ccc; text-decoration: line-through; }
+.step-note { margin-top: 4px; font-size: .57rem; color: #bbb; line-height: 1.7; }
+.step-note.tip { color: #b89a6a; }
+.step-note.warn { color: #cc8866; }
+.step-note.motivation { color: #7a9a6a; font-style: italic; }
+
+/* Section label inside steps */
+.section-label { padding: 14px 0 6px 36px; font-size: .52rem; letter-spacing: .18em; color: #ccc; text-transform: uppercase; }
+
+.footer { max-width: 600px; margin: 36px auto 0; padding: 0 28px; font-size: .52rem; color: #ccc; letter-spacing: .16em; text-transform: uppercase; text-align: center; }
+</style>
+
+</head>
+<body>
+
+<div class="header">
+  <div class="eyebrow">Packing Guide &nbsp;·&nbsp; Shea &nbsp;·&nbsp; 2–3 Weeks Out</div>
+  <h1>One Session<br/><em>at a Time.</em></h1>
+  <p class="tagline">Half days only. One session = one job, done completely before you stop.<br/>You don't have to do everything today. You just have to do today's thing.</p>
+</div>
+
+<div class="prog-wrap">
+  <div class="prog-row">
+    <span id="prog-text">0 of 0 steps done</span>
+    <span class="pct" id="prog-pct">0%</span>
+  </div>
+  <div class="track"><div class="fill" id="prog-fill" style="width:0%"></div></div>
+</div>
+
+<div class="supplies">
+  <div class="supplies-inner">
+    <div class="sup-label">Before You Start Anything</div>
+    <div class="sup-title">Get your supplies first — one trip, today.</div>
+    <div class="sup-body">
+      <strong>Boxes:</strong> Ask on Nextdoor or Facebook Marketplace for free ones first. Liquor stores always have sturdy small boxes. Buy the rest at U-Haul or Home Depot.<br/>
+      <strong>What to buy:</strong> Tape gun + 4 rolls of tape &nbsp;·&nbsp; Black permanent marker (2) &nbsp;·&nbsp; Packing paper or newspaper &nbsp;·&nbsp; 2–3 wardrobe boxes for hanging clothes &nbsp;·&nbsp; Bubble wrap for fragile stuff &nbsp;·&nbsp; Large zip-lock bags for small hardware and parts &nbsp;·&nbsp; Labels or blue tape for marking boxes<br/>
+      <strong>Box types to have on hand:</strong> Small boxes for books + heavy things &nbsp;·&nbsp; Medium boxes for most things &nbsp;·&nbsp; Large boxes for light bulky stuff only (pillows, linens, lampshades)
+    </div>
+  </div>
+</div>
+
+<div class="days" id="days"></div>
+<div class="footer" id="footer">One session at a time. You've got this.</div>
+
+<script>
+var DAYS = [
+  {
+    id: "d1",
+    num: "Session 1",
+    time: "~3 hours",
+    title: "Supplies run + list your couch",
+    sub: "Do this today. Everything else depends on it.",
+    steps: [
+      { id: "d1s1", text: "Go get your packing supplies — tape gun, tape, markers, packing paper, zip-lock bags", note: "Don't skip this. Trying to pack without supplies is how you stop before you start.", type: "tip" },
+      { id: "d1s2", text: "Order or pick up 2–3 wardrobe boxes — these are game changers for your clothes", note: "U-Haul sells them. Worth every dollar.", type: "tip" },
+      { id: "d1s3", text: "Photograph your vintage couch from 4–5 angles — good lighting, clean background" },
+      { id: "d1s4", text: "Post the couch on Facebook Marketplace TODAY", note: "Furniture takes time to sell. The sooner it's listed the better. Price it to actually move — you want it gone before moving day, not sitting in a truck.", type: "warn" },
+      { id: "d1s5", text: "Set up a staging area — one spot in your living room or garage where packed boxes will live", note: "Every box goes here. Keeps the chaos contained and lets you see your progress.", type: "tip" },
+      { id: "d1s6", text: "Put a trash bag and a donate bag in every room right now", note: "Having them there means you'll actually use them as you go.", type: "tip" },
+    ]
+  },
+  {
+    id: "d2",
+    num: "Session 2",
+    time: "~3–4 hours",
+    title: "Garage — get it done first",
+    sub: "The garage is the hidden weight. Clear it early.",
+    steps: [
+      { id: "d2s1", text: "Put on music or a podcast. The garage is not glamorous but it's freeing.", note: "You'll feel so much better when this is done.", type: "motivation" },
+      { id: "d2s2", text: "Pull everything out into the driveway or yard — yes, everything", note: "You can't sort what you can't see. Empty it completely first.", type: "tip" },
+      { id: "d2s3", text: "Make three physical piles on the ground: KEEP, DONATE/SELL, TRASH" },
+      { id: "d2s4", text: "Go through every single bin — don't just look at the top, actually empty them" },
+      { id: "d2s5", text: "Extra chairs + tables — decide now: coming to Shawn's, sell, or donate", note: "If you haven't used them in a year, they're not coming." },
+      { id: "d2s6", text: "Headboard — confirm it's coming, set it aside clearly labeled" },
+      { id: "d2s7", text: "Art supplies stored in garage — consolidate into one spot to deal with in the art session" },
+      { id: "d2s8", text: "Random bins and tools — anything broken or unidentifiable goes in trash now" },
+      { id: "d2s9", text: "Load your car with the donation pile TODAY or schedule a pickup", note: "Don't let donate items sit. They migrate back into the house.", type: "warn" },
+      { id: "d2s10", text: "Take the trash pile to the curb or dumpster before you come back inside" },
+      { id: "d2s11", text: "Stack your keep pile neatly — you'll deal with these in later sessions" },
+    ]
+  },
+  {
+    id: "d3",
+    num: "Session 3",
+    time: "~3 hours",
+    title: "Dad's photos + paper shredding",
+    sub: "Get the emotional stuff off your plate early.",
+    steps: [
+      { id: "d3s1", text: "Get the box of your dad's stuff down from the top of your closet" },
+      { id: "d3s2", text: "Go through it completely — sort photos by which aunt they go to", note: "You don't have to feel anything about this. It's just logistics. Sort, address, done.", type: "tip" },
+      { id: "d3s3", text: "Put each aunt's photos in an envelope, write the address on it now" },
+      { id: "d3s4", text: "Take the envelopes to the post office THIS WEEK — get it off your to-do list", note: "Don't let this linger. Mail them and move on.", type: "warn" },
+      { id: "d3s5", text: "Anything else in that box — trash or keep, decide now, no maybes" },
+      { id: "d3s6", text: "Now deal with your own paperwork pile", note: "Keep: tax returns (7 years back), insurance docs, medical records, lease, legal docs. Shred everything else.", type: "tip" },
+      { id: "d3s7", text: "Run the shredder on everything in the trash pile — don't skip this" },
+      { id: "d3s8", text: "File what you're keeping into a single folder or accordion file — this is coming with you" },
+      { id: "d3s9", text: "Box up the shredder — label it OFFICE, mark it FRAGILE" },
+    ]
+  },
+  {
+    id: "d4",
+    num: "Session 4",
+    time: "~3–4 hours",
+    title: "Clothes — sort, then pack",
+    sub: "The whole closet. One category at a time.",
+    steps: [
+      { id: "d4s1", text: "Pull EVERYTHING out of your closet — yes, the whole thing, onto the bed", note: "Seeing it all at once is the only way to make real decisions.", type: "tip" },
+      { id: "d4s2", text: "Sort into three piles: KEEP, DONATE, TRASH (anything damaged/stained)" },
+      { id: "d4s3", text: "Rule of thumb: if you haven't worn it in a year and it doesn't make you feel great, it goes", note: "You're moving into a shared closet. Edit now so you're not cramming.", type: "tip" },
+      { id: "d4s4", text: "Hanging clothes that are keeping — hang directly in wardrobe box, no folding needed", note: "This is why wardrobe boxes are worth it. Your clothes arrive wrinkle-free.", type: "tip" },
+      { id: "d4s5", text: "Folded clothes — pack neatly into medium boxes by category (tops, bottoms, etc.)" },
+      { id: "d4s6", text: "Label every box: CLOTHES — TOPS, CLOTHES — JEANS, etc." },
+      { id: "d4s7", text: "Shoes — wrap pairs together in packing paper, box them up" },
+      { id: "d4s8", text: "Handbags + accessories — stuff bags with packing paper, box with accessories" },
+      { id: "d4s9", text: "Go through dresser drawers — same keep/donate/trash rule" },
+      { id: "d4s10", text: "Pack dresser drawers into boxes OR leave lightweight items inside the dresser if it's coming", note: "If the dresser isn't coming, obviously empty it completely.", type: "tip" },
+      { id: "d4s11", text: "Bag up the donate pile and get it out of the house today" },
+    ]
+  },
+  {
+    id: "d5",
+    num: "Session 5",
+    time: "~3 hours",
+    title: "Bathroom — sort and pack",
+    sub: "Start with expired and unused. Be ruthless.",
+    steps: [
+      { id: "d5s1", text: "Pull everything out from under the sink first — completely empty it" },
+      { id: "d5s2", text: "Go through the medicine cabinet — toss anything expired, anything you haven't touched in months" },
+      { id: "d5s3", text: "Skincare — keep only your actual routine. Anything you bought and didn't love, donate or toss" },
+      { id: "d5s4", text: "Makeup — anything old, dried out, or never used goes now", note: "Mascara older than 3 months, old foundation, anything you don't wear.", type: "tip" },
+      { id: "d5s5", text: "Hair tools — keep what you use regularly, donate duplicates" },
+      { id: "d5s6", text: "Hair products — consolidate. Don't bring 6 half-empty bottles." },
+      { id: "d5s7", text: "Pack your full skincare and makeup into a clear bin or case — stays accessible until the last day" },
+      { id: "d5s8", text: "Pack hair tools together in a box — wrap cords with zip ties" },
+      { id: "d5s9", text: "Towels and linens — pack all but 1 set you'll use until move day", note: "Roll towels to save space. Box or bag them.", type: "tip" },
+      { id: "d5s10", text: "Remove any hooks, shelves, or organizers you installed — patch the wall now if needed" },
+      { id: "d5s11", text: "Leave out: 1 set of toiletries, 1 towel, basic meds — everything else is packed" },
+    ]
+  },
+  {
+    id: "d6",
+    num: "Session 6",
+    time: "~3–4 hours",
+    title: "Art supplies + tarot decks",
+    sub: "Pack as a system. Everything in its organizer, then move the organizer.",
+    steps: [
+      { id: "d6s1", text: "Don't unpack your organizers — pack them as-is into boxes", note: "Your system works. Don't dismantle it to repack it. Box the whole thing.", type: "tip" },
+      { id: "d6s2", text: "Tarot and oracle decks — wrap each deck individually in packing paper or a cloth", note: "You have a lot of these. A box labeled TAROT DECKS — FRAGILE keeps them safe and easy to find.", type: "tip" },
+      { id: "d6s3", text: "Pack tarot/oracle accessories together in the same box — cloths, bags, boxes, crystals if any" },
+      { id: "d6s4", text: "Painting supplies — seal any open paint containers with tape before boxing", note: "Wrap brushes in packing paper. One leaking paint bottle will ruin everything near it.", type: "warn" },
+      { id: "d6s5", text: "Drawing supplies — rubber band sketchbooks, wrap pencil sets" },
+      { id: "d6s6", text: "Paper and cardstock — this is heavy. Use small boxes only. Don't overfill.", note: "A box of paper feels fine until someone has to carry it up stairs.", type: "warn" },
+      { id: "d6s7", text: "Adhesives, tools, small supplies — put in zip-lock bags by category before boxing" },
+      { id: "d6s8", text: "Cricut machine — wrap in packing paper or its original box if you have it, label FRAGILE" },
+      { id: "d6s9", text: "Cricut mats — keep flat, slip between two pieces of cardboard, tape together" },
+      { id: "d6s10", text: "Cricut materials (vinyl, iron-on, cardstock) — box by type, label clearly" },
+      { id: "d6s11", text: "Label every art box with contents — you'll want to find things quickly when you unpack" },
+    ]
+  },
+  {
+    id: "d7",
+    num: "Session 7",
+    time: "~3–4 hours",
+    title: "Office — desk, printer, cables",
+    sub: "Photo everything before you unplug it.",
+    steps: [
+      { id: "d7s1", text: "Before unplugging anything — photograph the back of your computer, TV, any complex cable setup", note: "Future you will thank present you for this.", type: "tip" },
+      { id: "d7s2", text: "Pack books from office shelves — small boxes, heavy items at the bottom", note: "Books are the #1 reason people throw out their backs on moving day. Small boxes only.", type: "warn" },
+      { id: "d7s3", text: "Unplug and coil all cables — label each one with blue tape + marker", note: "Mystery cables become useless cables. Label them now.", type: "tip" },
+      { id: "d7s4", text: "Put cables and chargers into labeled zip-lock bags" },
+      { id: "d7s5", text: "Printer — remove ink cartridges, tape the tray shut, wrap in packing paper", note: "Ink cartridges can leak in transit. Bag them separately.", type: "warn" },
+      { id: "d7s6", text: "Pack desk accessories — pens, scissors, tape, organizers — into a box labeled DESK" },
+      { id: "d7s7", text: "Disassemble desk if it's coming — keep all hardware in a labeled zip-lock bag taped to the furniture" },
+      { id: "d7s8", text: "Office chair — remove any parts that come off, wrap the base" },
+      { id: "d7s9", text: "Bookshelves — disassemble if possible, wrap shelves in packing paper, keep hardware bagged" },
+    ]
+  },
+  {
+    id: "d8",
+    num: "Session 8",
+    time: "~3–4 hours",
+    title: "Living room — decor, books, lamps",
+    sub: "Don't pack the furniture yet. Pack what's on and around it.",
+    steps: [
+      { id: "d8s1", text: "Take everything off the walls — art, mirrors, shelves", note: "Wrap each piece in packing paper or bubble wrap. Mark FRAGILE on the box.", type: "tip" },
+      { id: "d8s2", text: "Patch nail holes after removing wall items — spackling paste, small putty knife", note: "Do it now while you can see them. They disappear once boxes are everywhere.", type: "tip" },
+      { id: "d8s3", text: "Books on living room shelves — sort keep vs. donate first", note: "Be honest. You're moving into a shared space. Only bring books you'll actually display or read.", type: "tip" },
+      { id: "d8s4", text: "Pack keep books into small boxes — mix heavy and lighter items" },
+      { id: "d8s5", text: "Bag up donate books — they go today or tomorrow" },
+      { id: "d8s6", text: "Decor items — wrap anything fragile in packing paper, box by room/vibe" },
+      { id: "d8s7", text: "Lamps — remove bulbs and pack separately, wrap base in packing paper, shade in a large box alone" },
+      { id: "d8s8", text: "Rugs — confirm sizes work at Shawn's before rolling and wrapping them", note: "Don't haul rugs that won't fit. Sell them now.", type: "tip" },
+      { id: "d8s9", text: "TV — if coming, wrap in moving blanket or original box, mark FRAGILE, pack last on truck" },
+      { id: "d8s10", text: "Entertainment unit — decide if it's coming. If not, list it now." },
+      { id: "d8s11", text: "Couch — should be sold by now. If not, re-list at a lower price or offer free pickup.", note: "A free couch is better than a couch on your truck that Shawn doesn't have room for.", type: "warn" },
+    ]
+  },
+  {
+    id: "d9",
+    num: "Session 9",
+    time: "~2–3 hours",
+    title: "Kitchen — sort and pack non-essentials",
+    sub: "Pack what you won't need for the next 2 weeks. Leave the rest.",
+    steps: [
+      { id: "d9s1", text: "Go cabinet by cabinet — pull everything out first", note: "You can't decide what to keep until you see how much there is.", type: "tip" },
+      { id: "d9s2", text: "Anything Shawn already has — donate or sell. No duplicates.", note: "Two can openers, two toasters, four spatulas. Pick the best one.", type: "tip" },
+      { id: "d9s3", text: "Pantry — stop buying new food now. Use what you have.", note: "Donate non-perishables you won't finish to a food bank. Don't move food.", type: "warn" },
+      { id: "d9s4", text: "Pack dishes — wrap each plate in packing paper, stand them vertically in the box like records", note: "Flat-stacked plates break. Vertical plates survive.", type: "tip" },
+      { id: "d9s5", text: "Pack glasses — wrap individually, pack upside down in a box with crumpled paper at bottom" },
+      { id: "d9s6", text: "Pots and pans — nest them, put packing paper between each, label KITCHEN — POTS" },
+      { id: "d9s7", text: "Bakeware — stack with packing paper between pieces" },
+      { id: "d9s8", text: "Small appliances — wrap cords around the appliance, wrap in packing paper" },
+      { id: "d9s9", text: "Leave out: 1 pot, 1 pan, 1 plate, 1 set of utensils, coffee maker — everything else packs now" },
+      { id: "d9s10", text: "Label all kitchen boxes: KITCHEN — FRAGILE where relevant" },
+    ]
+  },
+  {
+    id: "d10",
+    num: "Session 10",
+    time: "~2 hours",
+    title: "Bedroom final pack + bed breakdown",
+    sub: "Last things in the bedroom. Bed breaks down moving day morning.",
+    steps: [
+      { id: "d10s1", text: "Curtains — take down, fold, bag or box" },
+      { id: "d10s2", text: "Bedroom lamp — remove bulb, wrap base, box the shade separately" },
+      { id: "d10s3", text: "Two small tables — if coming, wrap legs; if not, list or set by donation pile" },
+      { id: "d10s4", text: "Armoire — confirm it's trash. If too big for trash, call for a junk removal pickup.", note: "1-800-GOT-JUNK or a local service can haul it. Worth the small cost.", type: "tip" },
+      { id: "d10s5", text: "Under the bed — pull everything out and go through it", note: "Vacuum under the bed while it's accessible.", type: "tip" },
+      { id: "d10s6", text: "Bedding — pack all but the set you'll sleep in until move night" },
+      { id: "d10s7", text: "Nightstands — pack everything in them. If they're not coming, set aside." },
+      { id: "d10s8", text: "NOTE: Don't break down the bed until moving day morning — you still need to sleep", note: "Moving day: strip and bag the mattress (get a mattress bag from U-Haul), disassemble frame, bag all hardware.", type: "tip" },
+    ]
+  },
+  {
+    id: "d11",
+    num: "Session 11 — Shawn helps",
+    time: "Full session together",
+    title: "Big furniture decisions + heavy lifting",
+    sub: "This is when you need him. Save it for a weekend he can come.",
+    steps: [
+      { id: "d11s1", text: "Walk through your place together — confirm what's coming vs. staying" },
+      { id: "d11s2", text: "Move heavy furniture to the staging area or mark it clearly for the truck" },
+      { id: "d11s3", text: "Bookshelves — disassemble together if they're coming" },
+      { id: "d11s4", text: "Load anything in the garage that's already decided and ready" },
+      { id: "d11s5", text: "Anything not coming — get it out of the apartment now. Curb, donation, or dumpster.", note: "Don't leave anything 'to deal with later.' Later becomes moving day.", type: "warn" },
+      { id: "d11s6", text: "Do a box count together — make sure you have enough truck space mentally mapped" },
+      { id: "d11s7", text: "Feed him. He's helping you move. Make it worth his trip.", note: "This is just good sense.", type: "motivation" },
+    ]
+  },
+  {
+    id: "d12",
+    num: "Last 2 Days",
+    time: "As needed",
+    title: "First-night bag + final odds and ends",
+    sub: "Pack this last. Keep it with you, not on the truck.",
+    steps: [
+      { id: "d12s1", text: "Pack your first-night bag — this goes in your car, not the truck", note: "After a 2-hour drive you will not want to dig through boxes.", type: "warn" },
+      { id: "d12s2", text: "First-night bag: 3 days of clothes, full toiletry kit, skincare routine, meds, chargers, snacks, water bottle" },
+      { id: "d12s3", text: "Important documents folder — in your bag, not a box: ID, SS card, insurance cards, lease, bank info" },
+      { id: "d12s4", text: "Valuables — jewelry, anything irreplaceable — in your car with you" },
+      { id: "d12s5", text: "Fridge — stop restocking. Use everything down or toss it." },
+      { id: "d12s6", text: "Last cleaning supplies — leave out one sponge, one spray, one roll of paper towels for the move-out clean" },
+      { id: "d12s7", text: "Do a room-by-room walkthrough — open every cabinet, every closet, every drawer" },
+      { id: "d12s8", text: "Charge everything the night before — phone, laptop, any devices" },
+      { id: "d12s9", text: "Get some sleep. Moving day is a full day. You'll need it.", note: "You did the work. Tomorrow is just logistics.", type: "motivation" },
+    ]
+  },
+];
+
+var states = {};
+var openDay = {};
+var KEY = "packing-guide-v1";
+
+for (var i = 0; i < DAYS.length; i++) {
+  openDay[DAYS[i].id] = i === 0;
+  for (var j = 0; j < DAYS[i].steps.length; j++) {
+    states[DAYS[i].steps[j].id] = false;
+  }
+}
+
+function load() {
+  try {
+    var d = JSON.parse(localStorage.getItem(KEY) || "{}");
+    for (var k in d) { if (k in states) states[k] = d[k]; }
+  } catch(e) {}
+}
+
+function save() {
+  try { localStorage.setItem(KEY, JSON.stringify(states)); } catch(e) {}
+}
+
+function toggleStep(id) {
+  states[id] = !states[id];
+  save();
+  render();
+}
+
+function toggleDay(id) {
+  openDay[id] = !openDay[id];
+  render();
+}
+
+function render() {
+  var total = 0, done = 0;
+  for (var i = 0; i < DAYS.length; i++) {
+    for (var j = 0; j < DAYS[i].steps.length; j++) {
+      total++;
+      if (states[DAYS[i].steps[j].id]) done++;
+    }
+  }
+  var pct = total ? Math.round(done / total * 100) : 0;
+  document.getElementById('prog-text').textContent = done + ' of ' + total + ' steps done';
+  document.getElementById('prog-pct').textContent = pct + '%';
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('footer').textContent = pct === 100 ? 'Packed. You did it.' : 'One session at a time. You\'ve got this.';
+
+  var container = document.getElementById('days');
+  container.innerHTML = '';
+
+  for (var i = 0; i < DAYS.length; i++) {
+    var day = DAYS[i];
+    var tot = day.steps.length;
+    var dn = 0;
+    for (var j = 0; j < day.steps.length; j++) {
+      if (states[day.steps[j].id]) dn++;
+    }
+    var allDone = dn === tot;
+    var isOpen = openDay[day.id];
+
+    var wrap = document.createElement('div');
+    wrap.className = 'day';
+
+    var hd = document.createElement('button');
+    hd.className = 'day-btn';
+    hd.setAttribute('onclick', 'toggleDay("' + day.id + '")');
+    hd.innerHTML =
+      '<div class="day-left">' +
+        '<div class="day-badge">' +
+          '<span class="day-num">' + day.num + '</span>' +
+          '<span class="day-time">' + day.time + '</span>' +
+        '</div>' +
+        '<div>' +
+          '<div class="day-title' + (allDone ? ' done' : '') + '">' + day.title + '</div>' +
+          '<div class="day-sub">' + day.sub + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="day-right">' +
+        '<span class="day-count">' + dn + '/' + tot + '</span>' +
+        '<span class="day-tog">' + (isOpen ? '−' : '+') + '</span>' +
+      '</div>';
+    wrap.appendChild(hd);
+
+    if (isOpen) {
+      var steps = document.createElement('div');
+      steps.className = 'steps';
+
+      for (var j = 0; j < day.steps.length; j++) {
+        var step = day.steps[j];
+        var isDone = states[step.id];
+
+        var row = document.createElement('div');
+        row.className = 'step';
+        (function(sid) {
+          row.onclick = function() { toggleStep(sid); };
+        })(step.id);
+
+        var dot = document.createElement('div');
+        dot.className = 'dot' + (isDone ? ' done' : '');
+
+        var body = document.createElement('div');
+        body.className = 'step-body';
+        var noteHtml = '';
+        if (step.note) {
+          var noteClass = step.type === 'tip' ? 'tip' : step.type === 'warn' ? 'warn' : step.type === 'motivation' ? 'motivation' : '';
+          noteHtml = '<div class="step-note ' + noteClass + '">' + step.note + '</div>';
+        }
+        body.innerHTML = '<div class="step-text' + (isDone ? ' done' : '') + '">' + step.text + '</div>' + noteHtml;
+
+        row.appendChild(dot);
+        row.appendChild(body);
+        steps.appendChild(row);
+      }
+      wrap.appendChild(steps);
+    }
+    container.appendChild(wrap);
+  }
+}
+
+load();
+render();
+</script>
+
+</body>
+</html>
