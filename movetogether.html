@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Shea's Move — With Heather</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #fff; color: #1a1a1a; font-family: 'DM Mono', monospace; min-height: 100vh; padding-bottom: 100px; }
+button { cursor: pointer; font-family: 'DM Mono', monospace; background: none; border: none; padding: 0; }
+
+/* User picker */
+#picker { position: fixed; inset: 0; background: #fff; display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 100; padding: 40px; }
+#picker h2 { font-family: 'DM Serif Display', serif; font-size: 2rem; font-weight: 400; margin-bottom: 8px; text-align: center; }
+#picker p { font-size: .62rem; color: #aaa; letter-spacing: .1em; margin-bottom: 36px; text-align: center; }
+.user-btns { display: flex; gap: 16px; flex-wrap: wrap; justify-content: center; }
+.user-btn { padding: 16px 36px; border-radius: 4px; font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; border: 1.5px solid; transition: all .15s; }
+.user-btn.shea { border-color: #9a7a54; color: #9a7a54; }
+.user-btn.shea:hover { background: #9a7a54; color: #fff; }
+.user-btn.heather { border-color: #6a8faa; color: #6a8faa; }
+.user-btn.heather:hover { background: #6a8faa; color: #fff; }
+
+/* Header */
+.header { max-width: 580px; margin: 0 auto; padding: 52px 28px 28px; }
+.eyebrow { font-size: .57rem; letter-spacing: .22em; color: #bbb; text-transform: uppercase; margin-bottom: 14px; display: flex; align-items: center; gap: 10px; }
+.who-badge { font-size: .5rem; letter-spacing: .15em; text-transform: uppercase; padding: 2px 8px; border-radius: 2px; }
+.who-badge.shea { color: #9a7a54; background: #f9f4ee; border: 1px solid #d4b898; }
+.who-badge.heather { color: #6a8faa; background: #edf3f7; border: 1px solid #a0c4d8; }
+h1 { font-family: 'DM Serif Display', serif; font-size: 2.2rem; font-weight: 400; line-height: 1.1; }
+h1 em { font-style: italic; color: #9a7a54; }
+.sub { margin-top: 12px; font-size: .6rem; color: #aaa; letter-spacing: .07em; line-height: 1.9; }
+.switch-user { margin-top: 14px; font-size: .54rem; color: #ccc; letter-spacing: .1em; text-decoration: underline; cursor: pointer; }
+.switch-user:hover { color: #999; }
+
+/* Sync */
+.sync-bar { max-width: 580px; margin: 0 auto; padding: 0 28px 20px; display: flex; align-items: center; gap: 8px; }
+.sync-dot { width: 7px; height: 7px; border-radius: 50%; background: #ddd; transition: background .3s; }
+.sync-dot.live { background: #7aaa6a; animation: pulse 2s infinite; }
+.sync-dot.err { background: #cc6666; }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+.sync-text { font-size: .52rem; color: #ccc; letter-spacing: .1em; }
+
+/* Progress */
+.prog-wrap { max-width: 580px; margin: 0 auto; padding: 0 28px 28px; }
+.prog-row { display: flex; justify-content: space-between; font-size: .55rem; color: #ccc; letter-spacing: .1em; margin-bottom: 8px; }
+.prog-row .pct { color: #9a7a54; }
+.track { height: 2px; background: #f0f0f0; border-radius: 2px; }
+.fill { height: 2px; background: linear-gradient(90deg, #9a7a54, #c4a06a); border-radius: 2px; transition: width .4s; }
+
+/* Sections */
+.sections { max-width: 580px; margin: 0 auto; padding: 0 28px; }
+.section { border-top: 1px solid #f0f0f0; }
+.section:last-child { border-bottom: 1px solid #f0f0f0; }
+
+.sec-btn { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 17px 0; text-align: left; gap: 12px; }
+.sec-left { display: flex; align-items: center; gap: 12px; }
+.sec-num { font-size: .5rem; letter-spacing: .2em; color: #ddd; min-width: 18px; }
+.sec-meta { }
+.sec-name { font-family: 'DM Serif Display', serif; font-size: .95rem; color: #1a1a1a; }
+.sec-name.alldone { color: #9a7a54; }
+.sec-time { font-size: .5rem; color: #ccc; letter-spacing: .08em; margin-top: 2px; }
+.sec-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.sec-count { font-size: .5rem; color: #ccc; letter-spacing: .06em; }
+.sec-tog { font-size: .65rem; color: #ddd; }
+
+/* Steps */
+.step-list { padding-bottom: 10px; }
+.step-row { display: flex; align-items: flex-start; gap: 11px; padding: 8px 0 8px 30px; border-radius: 3px; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.step-row:hover { background: #fafafa; margin: 0 -10px; padding-left: 40px; padding-right: 10px; }
+
+.dot { flex-shrink: 0; margin-top: 3px; width: 15px; height: 15px; border-radius: 3px; border: 1.5px solid #e0e0e0; display: flex; align-items: center; justify-content: center; transition: all .15s; }
+.dot.done-shea { border-color: #9a7a54; background: #9a7a54; }
+.dot.done-heather { border-color: #6a8faa; background: #6a8faa; }
+.dot.done-shea::after, .dot.done-heather::after { content: ''; display: block; width: 8px; height: 5px; border-left: 1.8px solid #fff; border-bottom: 1.8px solid #fff; transform: rotate(-45deg) translate(1px,-1px); }
+
+.step-body { flex: 1; }
+.step-text { font-size: .77rem; color: #333; line-height: 1.55; }
+.step-text.done { color: #ccc; text-decoration: line-through; }
+.step-note { margin-top: 4px; font-size: .57rem; line-height: 1.65; }
+.step-note.tip { color: #b89a6a; }
+.step-note.warn { color: #cc8866; }
+.step-note.go { color: #7a9a6a; font-style: italic; }
+
+.checker-tag { flex-shrink: 0; font-size: .46rem; letter-spacing: .1em; text-transform: uppercase; padding: 2px 6px; border-radius: 2px; margin-top: 3px; white-space: nowrap; }
+.checker-tag.shea { color: #9a7a54; background: #f9f4ee; border: 1px solid #d4b898; }
+.checker-tag.heather { color: #6a8faa; background: #edf3f7; border: 1px solid #a0c4d8; }
+
+.footer { max-width: 580px; margin: 36px auto 0; padding: 0 28px; font-size: .52rem; color: #ccc; letter-spacing: .16em; text-transform: uppercase; text-align: center; }
+</style>
+</head>
+<body>
+
+<!-- User Picker -->
+<div id="picker">
+  <h2>Who's here?</h2>
+  <p>Your progress is saved separately and synced in real time.</p>
+  <div class="user-btns">
+    <button class="user-btn shea" onclick="setUser('shea')">Shea</button>
+    <button class="user-btn heather" onclick="setUser('heather')">Heather</button>
+  </div>
+</div>
+
+<div id="app" style="display:none">
+  <div class="header">
+    <div class="eyebrow">
+      Moving Plan &nbsp;·&nbsp; Harrison AR
+      <span class="who-badge" id="who-badge"></span>
+    </div>
+    <h1>One Step<br/><em>at a Time.</em></h1>
+    <p class="sub">2–3 weeks out &nbsp;·&nbsp; Half days &nbsp;·&nbsp; You and Heather working together<br/>Tap a step when it's done. Both of you can see progress in real time.</p>
+    <div class="switch-user" onclick="switchUser()">Switch user</div>
+  </div>
+
+  <div class="sync-bar">
+    <div class="sync-dot" id="sync-dot"></div>
+    <span class="sync-text" id="sync-text">Connecting...</span>
+  </div>
+
+  <div class="prog-wrap">
+    <div class="prog-row">
+      <span id="prog-text">0 of 0 done</span>
+      <span class="pct" id="prog-pct">0%</span>
+    </div>
+    <div class="track"><div class="fill" id="prog-fill" style="width:0%"></div></div>
+  </div>
+
+  <div class="sections" id="sections"></div>
+  <div class="footer" id="footer">One session at a time.</div>
+</div>
+
+<script>
+var BIN_ID = "69b10e49cadcd23453e5977f";
+var API_KEY = "$2a$10$dQ3ABJzMKpyfsxZ7fLj/beHdf/wT/gAH7Sd6.FE5ztfE2HRRWo9wu";
+var BASE = "https://api.jsonbin.io/v3/b/" + BIN_ID;
+
+var DATA = [
+  { id: "s1", num: "01", name: "TODAY — Get Supplies + List Couch", time: "~2 hours · do this first", steps: [
+    { id: "s1a", text: "Buy packing supplies — tape gun, 4 rolls tape, 2 black markers, packing paper", note: "You can't pack without these. One trip, get it done.", type: "go" },
+    { id: "s1b", text: "Get 2–3 wardrobe boxes (U-Haul sells them)", note: "Worth every dollar for your clothes.", type: "tip" },
+    { id: "s1c", text: "Photograph the vintage couch — 5 photos, good lighting, multiple angles" },
+    { id: "s1d", text: "Post couch on Facebook Marketplace right now", note: "The selling clock starts when it's listed. Do it today.", type: "warn" },
+    { id: "s1e", text: "Put a trash bag AND donate bag in every single room", note: "Sounds small. Changes everything.", type: "tip" },
+    { id: "s1f", text: "Set up a staging area — one spot where all packed boxes will stack", note: "Living room corner or garage. Every box goes here so you can see progress.", type: "tip" },
+  ]},
+  { id: "s2", num: "02", name: "Garage — Clear It First", time: "~3–4 hours · session 2", steps: [
+    { id: "s2a", text: "Put on a playlist or podcast. The garage is a slog but you'll feel amazing after.", type: "go" },
+    { id: "s2b", text: "Pull EVERYTHING out into the driveway — completely empty it", note: "You can't sort what you can't see.", type: "tip" },
+    { id: "s2c", text: "Make three piles on the ground: KEEP · DONATE/SELL · TRASH" },
+    { id: "s2d", text: "Go through every single bin — don't just look at the top, actually empty each one" },
+    { id: "s2e", text: "Extra chairs and tables — decide now: Shawn's place, sell, or donate" },
+    { id: "s2f", text: "Headboard — confirm it's coming, set it aside and label it" },
+    { id: "s2g", text: "Art supplies stored in garage — consolidate into one pile for the art session" },
+    { id: "s2h", text: "Anything broken or unidentifiable — trash pile, no maybes" },
+    { id: "s2i", text: "Load the donation pile into the car and drop it off TODAY", note: "Don't let donate items sit. They migrate back inside.", type: "warn" },
+    { id: "s2j", text: "Take the trash pile to the curb or dumpster before you come back in" },
+  ]},
+  { id: "s3", num: "03", name: "Dad's Photos + Paperwork", time: "~2 hours · get it off your plate", steps: [
+    { id: "s3a", text: "Get the box down from the top of the bedroom closet" },
+    { id: "s3b", text: "Sort the photos by which aunt they go to", note: "Just logistics. Sort, address, done.", type: "tip" },
+    { id: "s3c", text: "Put each aunt's photos in an envelope and write the address on it now" },
+    { id: "s3d", text: "Take envelopes to the post office this week — get it off the list", type: "warn" },
+    { id: "s3e", text: "Anything else in that box — keep or trash, no maybes" },
+    { id: "s3f", text: "Go through your own paperwork pile", note: "Keep: tax returns (7 yrs), insurance, medical records, lease, legal docs. Shred everything else.", type: "tip" },
+    { id: "s3g", text: "Run the shredder on the trash pile — don't skip this" },
+    { id: "s3h", text: "File what you're keeping into one folder — this rides in your car, not the truck" },
+  ]},
+  { id: "s4", num: "04", name: "Clothes — Sort Then Pack", time: "~3–4 hours · whole closet", steps: [
+    { id: "s4a", text: "Pull EVERYTHING out of the closet onto the bed — yes, all of it", note: "Seeing it all at once is the only way to make real decisions.", type: "tip" },
+    { id: "s4b", text: "Sort into: DEPOP · KEEP · DONATE · TRASH" },
+    { id: "s4c", text: "Depop pile first — jackets, alt tops, vintage, Levi's, boots", note: "Photograph these before anything else gets packed.", type: "tip" },
+    { id: "s4d", text: "Hanging clothes (keeping) — hang directly into wardrobe box, no folding" },
+    { id: "s4e", text: "Folded clothes — pack into medium boxes by category: TOPS, BOTTOMS, etc." },
+    { id: "s4f", text: "Label every box: CLOTHES — TOPS, CLOTHES — JEANS, etc." },
+    { id: "s4g", text: "Shoes — wrap pairs together in packing paper, box them" },
+    { id: "s4h", text: "Bags and accessories — stuff bags with packing paper, box with accessories" },
+    { id: "s4i", text: "Go through dresser drawers — same keep/donate/trash rule" },
+    { id: "s4j", text: "Donate pile — bag it and get it out of the apartment today" },
+  ]},
+  { id: "s5", num: "05", name: "Bathroom — Sort and Pack", time: "~2–3 hours", steps: [
+    { id: "s5a", text: "Pull everything out from under the sink — completely empty it" },
+    { id: "s5b", text: "Medicine cabinet — toss anything expired or untouched in months" },
+    { id: "s5c", text: "Skincare — keep your actual routine only. Anything you didn't love, toss." },
+    { id: "s5d", text: "Makeup — toss anything old, dried out, or never worn", note: "Mascara older than 3 months. Old foundation. Anything you skip over.", type: "tip" },
+    { id: "s5e", text: "Hair tools — keep what you use regularly, donate duplicates" },
+    { id: "s5f", text: "Pack skincare and makeup into a clear bin — leave it out until move day" },
+    { id: "s5g", text: "Pack hair tools together — wrap cords with zip ties" },
+    { id: "s5h", text: "Towels — pack all but one set you'll use until move night. Roll them to save space." },
+    { id: "s5i", text: "Remove any hooks or adhesive strips — patch the wall now while you can see it" },
+    { id: "s5j", text: "Leave out: 1 set of toiletries, 1 towel, basic meds. Everything else is packed." },
+  ]},
+  { id: "s6", num: "06", name: "Art Supplies + Tarot Decks", time: "~3 hours · pack as a system", steps: [
+    { id: "s6a", text: "Don't unpack your organizers — box them as-is", note: "Your system already works. Don't dismantle it to repack it.", type: "tip" },
+    { id: "s6b", text: "Tarot and oracle decks — wrap each deck individually in packing paper or cloth", note: "Box labeled ART — TAROT DECKS · FRAGILE. One box, all together.", type: "tip" },
+    { id: "s6c", text: "Pack tarot accessories in the same box — cloths, bags, boxes" },
+    { id: "s6d", text: "Painting supplies — tape any open paint containers shut before boxing", note: "One leaking bottle ruins everything near it.", type: "warn" },
+    { id: "s6e", text: "Drawing supplies — rubber band sketchbooks, wrap pencil sets" },
+    { id: "s6f", text: "Paper and cardstock — small boxes only, don't overfill", note: "Paper is deceptively heavy.", type: "warn" },
+    { id: "s6g", text: "Small supplies — zip-lock bag by category before boxing" },
+    { id: "s6h", text: "Cricut machine — wrap in packing paper, label FRAGILE, its own box" },
+    { id: "s6i", text: "Cricut mats — keep flat, slip between two pieces of cardboard, tape together" },
+    { id: "s6j", text: "Label every art box with contents — you'll want to find things fast when you unpack" },
+  ]},
+  { id: "s7", num: "07", name: "Office — Desk, Printer, Cables", time: "~3 hours", steps: [
+    { id: "s7a", text: "Photograph the back of your computer and any complex cable setup before unplugging", note: "Future you will be grateful.", type: "tip" },
+    { id: "s7b", text: "Pack office books — small boxes, heavy items at the bottom, label HEAVY" },
+    { id: "s7c", text: "Label each cable with blue tape + marker before coiling", note: "Mystery cables become useless cables.", type: "tip" },
+    { id: "s7d", text: "Put cables and chargers into labeled zip-lock bags" },
+    { id: "s7e", text: "Printer — remove ink cartridges, bag separately, tape the tray shut, wrap in packing paper", note: "Ink cartridges leak in transit.", type: "warn" },
+    { id: "s7f", text: "Pack desk accessories into a box labeled OFFICE — DESK SUPPLIES" },
+    { id: "s7g", text: "Disassemble desk if it's coming — keep all hardware in a labeled zip-lock bag" },
+  ]},
+  { id: "s8", num: "08", name: "Living Room — Decor + Books", time: "~3–4 hours", steps: [
+    { id: "s8a", text: "Take everything off the walls — art, mirrors, shelves", note: "Wrap each piece in packing paper. Mark FRAGILE on the box.", type: "tip" },
+    { id: "s8b", text: "Patch nail holes right after removing wall items — spackling paste, small putty knife", note: "Do it now while you can see them.", type: "tip" },
+    { id: "s8c", text: "Books — sort keep vs. donate first. Be honest about what's coming.", note: "You're moving into a shared space. Only bring books you'll actually display or read.", type: "tip" },
+    { id: "s8d", text: "Pack keep books into small boxes — label BOOKS · HEAVY" },
+    { id: "s8e", text: "Bag up donate books — out of the apartment today or tomorrow" },
+    { id: "s8f", text: "Decor items — wrap anything fragile in packing paper" },
+    { id: "s8g", text: "Lamps — remove bulbs and pack separately, wrap base, shade gets its own large box" },
+    { id: "s8h", text: "Rugs — confirm sizes work at Shawn's before rolling and wrapping", note: "Don't haul rugs that won't fit. Sell them.", type: "tip" },
+    { id: "s8i", text: "Couch — should be sold by now. If not, re-list at a lower price or offer free pickup.", type: "warn" },
+  ]},
+  { id: "s9", num: "09", name: "Kitchen — Sort and Pack", time: "~3 hours", steps: [
+    { id: "s9a", text: "Go cabinet by cabinet — pull everything out first" },
+    { id: "s9b", text: "Anything Shawn already has — donate or sell. No duplicates.", note: "Two toasters, four spatulas. Pick the best one, lose the rest.", type: "tip" },
+    { id: "s9c", text: "Pantry — stop buying new food now. Use what you have or donate non-perishables.", type: "warn" },
+    { id: "s9d", text: "Dishes — wrap each plate in packing paper, stand them vertically in the box like records", note: "Flat-stacked plates break. Vertical plates survive.", type: "tip" },
+    { id: "s9e", text: "Glasses — wrap individually, pack upside down, crumpled paper at the bottom" },
+    { id: "s9f", text: "Pots and pans — nest them with packing paper between each" },
+    { id: "s9g", text: "Small appliances — wrap cord around appliance, then wrap in packing paper" },
+    { id: "s9h", text: "Leave out: 1 pot, 1 pan, 1 plate, 1 set of utensils, coffee maker. Everything else packs now." },
+  ]},
+  { id: "s10", num: "10", name: "Bedroom Final + First-Night Bag", time: "~2 hours · last things", steps: [
+    { id: "s10a", text: "Curtains — take down, fold, bag or box" },
+    { id: "s10b", text: "Bedroom lamp — remove bulb, wrap base, box the shade separately" },
+    { id: "s10c", text: "Two small tables — if coming wrap the legs; if not, list or donate pile" },
+    { id: "s10d", text: "Armoire — call for junk removal pickup if it's too big for trash", note: "1-800-GOT-JUNK or a local service. Worth the cost.", type: "tip" },
+    { id: "s10e", text: "Under the bed — pull everything out and decide. Vacuum under there." },
+    { id: "s10f", text: "Bedding — pack all but the set you'll sleep in until move night" },
+    { id: "s10g", text: "Pack your FIRST-NIGHT BAG — this goes in your car, not the truck", note: "After a 2-hour drive you will not want to dig through boxes.", type: "warn" },
+    { id: "s10h", text: "First-night bag: 3 days of clothes, full toiletry kit, skincare, meds, chargers, snacks" },
+    { id: "s10i", text: "Documents folder in your bag — ID, SS card, insurance, lease, bank info" },
+    { id: "s10j", text: "Valuables in your car — jewelry, anything irreplaceable. Not on the truck." },
+    { id: "s10k", text: "Do NOT break down the bed until moving day morning — you still need to sleep" },
+  ]},
+  { id: "s11", num: "11", name: "Moving Day", time: "full day", steps: [
+    { id: "s11a", text: "Strip the bed, bag the mattress (get a mattress bag from U-Haul), disassemble frame" },
+    { id: "s11b", text: "Walk every room — open every door, cabinet, closet, drawer" },
+    { id: "s11c", text: "Photograph every room before you leave — date-stamped" },
+    { id: "s11d", text: "Clean thoroughly — floors, kitchen, bathroom, wipe walls", note: "Your deposit depends on this.", type: "warn" },
+    { id: "s11e", text: "Clear the fridge completely — wipe it out" },
+    { id: "s11f", text: "Load truck — heaviest boxes first, against the cab wall, furniture last" },
+    { id: "s11g", text: "Return ALL keys to Kurt Owens" },
+    { id: "s11h", text: "Email kurt454@live.com confirming vacancy and key return — keep that email", note: "7-day deposit clock starts the moment keys are returned.", type: "warn" },
+    { id: "s11i", text: "First-night bag in your car. Valuables in your car. Drive." },
+  ]},
+];
+
+var currentUser = null;
+var checks = {};
+var openSec = {};
+var polling = null;
+var lastData = null;
+
+for (var i = 0; i < DATA.length; i++) {
+  openSec[DATA[i].id] = i === 0;
+  for (var j = 0; j < DATA[i].steps.length; j++) {
+    checks[DATA[i].steps[j].id] = null;
+  }
+}
+
+function setUser(u) {
+  currentUser = u;
+  document.getElementById('picker').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+  document.getElementById('who-badge').textContent = u.charAt(0).toUpperCase() + u.slice(1);
+  document.getElementById('who-badge').className = 'who-badge ' + u;
+  fetchData();
+  polling = setInterval(fetchData, 4000);
+}
+
+function switchUser() {
+  clearInterval(polling);
+  currentUser = null;
+  document.getElementById('picker').style.display = 'flex';
+  document.getElementById('app').style.display = 'none';
+}
+
+function setSyncStatus(status) {
+  var dot = document.getElementById('sync-dot');
+  var txt = document.getElementById('sync-text');
+  dot.className = 'sync-dot ' + (status === 'live' ? 'live' : status === 'err' ? 'err' : '');
+  txt.textContent = status === 'live' ? 'Live · syncing every 4s' : status === 'err' ? 'Sync error — check connection' : 'Connecting...';
+}
+
+function fetchData() {
+  fetch(BASE + '/latest', {
+    headers: { 'X-Master-Key': API_KEY, 'X-Bin-Meta': 'false' }
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(d) {
+    setSyncStatus('live');
+    var remote = d.checks || {};
+    var changed = JSON.stringify(remote) !== JSON.stringify(lastData);
+    if (changed) {
+      checks = remote;
+      // fill in any missing keys
+      for (var i = 0; i < DATA.length; i++) {
+        for (var j = 0; j < DATA[i].steps.length; j++) {
+          var id = DATA[i].steps[j].id;
+          if (!(id in checks)) checks[id] = null;
+        }
+      }
+      lastData = JSON.parse(JSON.stringify(checks));
+      render();
+    }
+  })
+  .catch(function() { setSyncStatus('err'); });
+}
+
+function saveData() {
+  lastData = JSON.parse(JSON.stringify(checks));
+  fetch(BASE, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json', 'X-Master-Key': API_KEY },
+    body: JSON.stringify({ checks: checks })
+  })
+  .then(function() { setSyncStatus('live'); })
+  .catch(function() { setSyncStatus('err'); });
+}
+
+function toggleStep(id) {
+  var cur = checks[id];
+  if (cur === null) {
+    checks[id] = currentUser;
+  } else if (cur === currentUser) {
+    checks[id] = null;
+  } else {
+    checks[id] = currentUser; // override other user
+  }
+  saveData();
+  render();
+}
+
+function toggleSec(id) {
+  openSec[id] = !openSec[id];
+  render();
+}
+
+function render() {
+  var total = 0, done = 0;
+  for (var i = 0; i < DATA.length; i++) {
+    for (var j = 0; j < DATA[i].steps.length; j++) {
+      total++;
+      if (checks[DATA[i].steps[j].id] !== null) done++;
+    }
+  }
+  var pct = total ? Math.round(done / total * 100) : 0;
+  document.getElementById('prog-text').textContent = done + ' of ' + total + ' done';
+  document.getElementById('prog-pct').textContent = pct + '%';
+  document.getElementById('prog-fill').style.width = pct + '%';
+  document.getElementById('footer').textContent = pct === 100 ? 'Done. You did it.' : 'One session at a time.';
+
+  var container = document.getElementById('sections');
+  container.innerHTML = '';
+
+  for (var i = 0; i < DATA.length; i++) {
+    var s = DATA[i];
+    var tot = s.steps.length;
+    var dn = 0;
+    for (var j = 0; j < s.steps.length; j++) {
+      if (checks[s.steps[j].id] !== null) dn++;
+    }
+    var allDone = dn === tot;
+    var isOpen = openSec[s.id];
+
+    var sec = document.createElement('div');
+    sec.className = 'section';
+
+    var hd = document.createElement('button');
+    hd.className = 'sec-btn';
+    hd.setAttribute('onclick', 'toggleSec("' + s.id + '")');
+    hd.innerHTML =
+      '<div class="sec-left">' +
+        '<span class="sec-num">' + s.num + '</span>' +
+        '<div class="sec-meta">' +
+          '<div class="sec-name' + (allDone ? ' alldone' : '') + '">' + s.name + '</div>' +
+          '<div class="sec-time">' + s.time + '</div>' +
+        '</div>' +
+      '</div>' +
+      '<div class="sec-right">' +
+        '<span class="sec-count">' + dn + ' / ' + tot + '</span>' +
+        '<span class="sec-tog">' + (isOpen ? '−' : '+') + '</span>' +
+      '</div>';
+    sec.appendChild(hd);
+
+    if (isOpen) {
+      var list = document.createElement('div');
+      list.className = 'step-list';
+
+      for (var j = 0; j < s.steps.length; j++) {
+        var step = s.steps[j];
+        var checker = checks[step.id];
+        var isDone = checker !== null;
+
+        var row = document.createElement('div');
+        row.className = 'step-row';
+        (function(sid) {
+          row.onclick = function() { toggleStep(sid); };
+        })(step.id);
+
+        var dot = document.createElement('div');
+        var dotClass = 'dot';
+        if (checker === 'shea') dotClass += ' done-shea';
+        else if (checker === 'heather') dotClass += ' done-heather';
+        dot.className = dotClass;
+
+        var body = document.createElement('div');
+        body.className = 'step-body';
+        var noteHtml = step.note ? '<div class="step-note ' + (step.type || '') + '">' + step.note + '</div>' : '';
+        body.innerHTML = '<div class="step-text' + (isDone ? ' done' : '') + '">' + step.text + '</div>' + noteHtml;
+
+        row.appendChild(dot);
+        row.appendChild(body);
+
+        if (checker) {
+          var tag = document.createElement('span');
+          tag.className = 'checker-tag ' + checker;
+          tag.textContent = checker;
+          row.appendChild(tag);
+        }
+
+        list.appendChild(row);
+      }
+      sec.appendChild(list);
+    }
+    container.appendChild(sec);
+  }
+}
+</script>
+</body>
+</html>
